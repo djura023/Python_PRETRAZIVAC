@@ -43,7 +43,7 @@ def ParsirajUpit(trie):
         elif rezultatPretrage[1] == "not":
             s = s.komplementRecnika(rezultatPretrage[2])
         elif rezultatPretrage[1] == "or":
-            s = s.Unija(rezultatPretrage[2])
+            s = s.unijaRecnika(rezultatPretrage[2])
         else:
             s = s.unijaRecnika(rezultatPretrage[1])
             s = s.unijaRecnika(rezultatPretrage[2])

@@ -24,7 +24,7 @@ class Set():
     def presekRecnika(self, drugiSkup):
         presekSkupova = Set()
         for elementIzPrvogSkupa in self.recnik:
-             if drugiSkup.sadrziLink(elementIzPrvogSkupa):
+             if drugiSkup.daLiImaLink(elementIzPrvogSkupa):
                 presekSkupova.dodavanjeLinka(elementIzPrvogSkupa)
         return presekSkupova
 

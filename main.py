@@ -57,11 +57,9 @@ if __name__ == "__main__":
             g = Graph()
             direktorijum(parser1,trie,g)
         elif unos == "2":
-            s = ParsirajUpit(trie)  # s vraca trazenu listu i niz rijeci iz upita (s,exists)
-            # 1
+            s = ParsirajUpit(trie)
             r = rjecnikZaRang(trie, s[1], s[0])
-            # r[0] zbir svih pojavljivanja r[1] pojavljivanje razlicitih reci
-            rjecnikZaRangiranje = r[0]  # link i ukupan br pojavljiavanja reci na njemu
+            rjecnikZaRangiranje = r[0]
             recnikZbirSvihReciNaLinkuPom = {}
             recnikZbirSvihReciNaLinku = {}
             for link in rjecnikZaRangiranje.keys():
@@ -94,12 +92,7 @@ if __name__ == "__main__":
                 # PAGINACIJA
                 paginacija(listaZaSortiranje, recnikZbirSvihReciNaLinku, rangRazlicitihReci, rangUkupnoReci,
                            rangSnagaLinkova, rangBrojLinkova)
-
-
             else:
                 print("Nema fajlova koji zadovoljavaju pretragu!")
-
-
-
         elif unos == "0":
             break
