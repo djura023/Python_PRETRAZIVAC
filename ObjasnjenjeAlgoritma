@@ -1,0 +1,79 @@
+#TrieStruct
+
+	Trie se sastoji od klase koja predstavlja cvor I klase koja predtsavlja trie.
+-U klasi za cvor se nalaze atributi:
+1.children – recnik koji predstavlja decu cvora I u koji ubacujemo karaktere 2.isEndOfWord
+– postavlja se na true ukoliko cvor predstavlja zavrsetak reci,I drugi parameter predstavlja ukupan broj pojavljivanja te reci
+3.links – recnik ciji su kljucevi absolutne putanje linkova u kojima se rec pojavljuje a vrednosti su brojevi pojavljivanja reci u tim linkovima.
+Tu se nalazi I klasa IntoSet koja prebacuje recnik links u set.
+- U klasi Trie imamo funkciju za dodavanje reci u graf koja dodaje karakter po karakter u 
+cvorove I kad dodje do kraja reci postavlja vrednost isEndOfWord na true I ubacuje linkove u krajnji cvor.
+Tu je I funkcija za pretragu preko koje pristupamo cvoru u kojem se nalazai poslednji karakter reci koju trazimo.
+
+#ParsiranjeSkupaHtmlDokumenata
+
+	Unosimo direktorijum koji zelimo da parsiramo,zatim prolazimo kroz taj direktorijum I parsiramo html dokumente,
+  nakon parsiranja ubacujemo reci u trie,a linkove u graf.
+
+#ParserUpita
+
+	Tu se nalazi klasa ParsirajU u kojoj unosimo upit za pretragu,vrsimo pretragu pojedinacnih reci I kombinujemo sa osnovnim skupovnim operacijama .
+  Unosimo upit za pretragu,zatim splitujemo reci I smestamo ih u promenljivoj delovi.Prolazimo kroz delove,ukoliko je deo tj rec logicki operator na 
+  odgovarajuce mesto u listu rez ubacujemo bas taj logicki operator,ukoliko rec ne postoji u trie ubacujemo prazan set u rez,a ako rec postoji u trie 
+  ubacujemo set sa linkovima u kojima se javlja ta rec u listu rez.
+	Zatim prolazimo kroz listu rez I vrsimo operacije unije,preseka ili komplementa po potrebi I krajnji rezultat pretrage smestamo u set s,koji je povratna
+  vrednost Klase ParsirajU.
+
+
+#Graf
+
+	Graf se sastoji od dva recnika.Recnik ulaznih cvorova kao kljuc prima link html stranice, a kao rezultat vraca listu 
+  cvorova koje pokazuju na taj cvor, dok recnik izlaznih cvorova, kao kljuc prima link hmtl stranice, ali kao rezultat vraca listu 
+  cvorova na koje dati cvor pokazuje.Metoda addPage se koristi za dodavanje novog cvora(html dokumenta), sa linkovima koji se nalaze u tom dokumentu. 
+  U graf, ona poziva metodu addVertex, koji dodaje element  u recnik izlaznih cvorova,  i metodu addEdge za svaki link koji se nalazi na tom html dokumentu
+  . AddEdge koji pravi granu izmedju datog html dokumenta  i linka koji se nalazi u njemu, i tim linkovima dodaje dati cvor u recnik ulaznih cvorova.
+
+# Rangirana pretraga
+
+	Rang html stranice sastoji se od 1. Broj pojavljivanja trazenih reci na njoj (Prebrojavanje broja reci koje se pojavljuju u html stranici vrsi 
+  funkcija rjecnikZaRang) 2. Broj linkova iz drugih stranica na pronadjenu stranicu (Prebrojavanje linkova koji pokazuju na datu stranicu vrsi funkcija
+  uticajBrojaLinkova)
+3. Broj trazenih reci u stranicama koje sadrze link na trazenu stranicu (Prebrojavanje reci u linkovima koje pokazuju na datu html stranicu se vrsi u funkciji
+uticajVrednostiLinkova) i 4. Broj pojavljivanja razlicitih reci  iz upita u html stranici (Prebrojavanje razlicitih reci iz upita koje se pojavljuju na 
+jednoj html stranici vrsi takodje funkcija rjecnikZaRang). Rang html stranice se formira modifikacijom i kombinovanjem rezultata ovih funkcija.
+	Algoritam za rang: Definisali sms da je baza algorima 10. Posto imaju prednost stranice sa vecim brojem razlicitih reci, bazu smo stepenovali brojem 
+  razlicitih reci iz upita koje se pojavljuju u html stranici. Ovim dobijamo klasifikaciju stranica odredjenu brojem reci u njoj. Dalje sledi rangiranje
+  pojedinacnih klasa.U tom rangiranju 50% utice vrednost html stranica koje pokazuju na datu stranicu, 30% ukupan broj reci iz upita koje se javljaju na samoj
+  stranici i 20% broj liknova koji pokazuje na datu stranicu.   Formula za odredjivanje ranga je sledeca :
+	RANG = 10^n - baza*0.5/vrednost_html_stranica - baza*0.3/broj_reci_u_html_stranici - baza*0.2/broj_linkova_na_datu_stranicu,
+Gde je n broj razlicitih reci na jednoj html stranici. Dakle, sa povecanjem broja trazenih reci u linkovima date stranice, ili povecanjem broja 
+trazenih reci u datoj stranici ili povecanjem broja linkova koji ukazuju na datu stranicu, se smanjuje ukupan broj koji se oduzima od vrednosti 10^(n),
+a samim tim ce link biti bolje rangiran. Sa smanjenjem nekih od pomenutih osobina,neki od umanjilaca ce imati vecu vrendost i rang ce na taj nacin, date
+html stranice biti manji
+
+#Prikaz rezultata
+
+	Za sortitanje rezultata koristen je heap algoritam. On se zasniva na formiranju min heap-a , gde ce se na vrhu nalaziti element
+  sa najmanjim rangom, a u listovima ce biti elementi sa najvecim rangom.Prvom for petljkom se formira min heap, dok druga for petlja se koristi
+  za sortiranje, odnosno koren se menja sa desnim listom,ako on postoji, ako ne, onda se menja sa levim, i izbacuje iz heap-a time sto se u for petlji
+  smanjuje vrednost “ i ” za koju se pretrazuje.Nakon toga se proverava da li je nova struktura i dalje min heap, a ako nije,kreira se novi min heap od
+  preostalih elemenata u heap-u.Eelement koji je izbacen iz heap-a je u trenutku pre toga bio najmanji element u heap-u,a nastavlja se soritranje preostalog
+  dela heap-a, dok se ne izbaci i koren heap-a, sto je ujedno i najveci element koji se nalazio u heap-u, cime dobijamo opadajuce sortiran niz elemenata.
+
+
+# Paginacija rezultata
+
+	Paginacija rezultata je odradjena tako sto je definisan inicijalni broj linkova na jednoj stranici, i na sammom pocetku se prikazuje prva stranica  
+  na kojoj se nalazi taj broj, ili manje od tog broja linkova.Korisnik ima mogucnost da izabere opciju NEXT (N) da bi se prikazala naredna strana, ukoliko
+  vec nije ispisana poslednja stranica, opciju C da promeni broj linkova koji se ispisuju na jdnoj stranici , X da izadje iz programa ili BACK (B) da
+  prikaze prethodnu stranicu, ukoliko se ne nalazi na pocetnoj stranici. Ukoliko se nalazizmo na poslednjoj stranici, korisniku nece biti dozvoljeno da 
+  unese NEXT, niti ce moci da unese BACK, ako se nalazi na pocetku fajla.
+
+# Set
+	Set je realizovan kao rjecnik koja ima funkcije za dodavanje elementa ,uniju, presek, komplement…Unija ,presek
+  i komplement se pozivaju nad objektom tipa set i primaju objekat tipa set.Unija vraca objekat tipa set koji sadrzi 
+  elementa iz seta nad kojim je pozvana funkcija kao i elemente seta koji je primljen kao parametar funkcije, presek vraca referencu
+  na objekat tipa set koji sadrzi samo zajednicke elemente iz oba skupa, dok komplement vraca referencu na objekat tipa set koji sadrzi one 
+  elemente koji nisu istovremeno i elementi drugog skupa.Odlika seta je da se u njemu ne nalaze 2 ista elementa, sto je omoguceno time sto rjecnik ima 
+  jedinstvenu vrendost kljuc.
+#Sortiranje koristen je heap sort algoriitam iz nastavnih materijala 
