@@ -1,4 +1,14 @@
-
+from StrukturePodataka.trieStruct import *
+from StrukturePodataka.set import Set
+from StrukturePodataka.ispis import *
+from Funkcionalnosti.parser import Parser
+from Funkcionalnosti.parserUpita import *
+from StrukturePodataka.graf import *
+import time
+import os
+from Funkcionalnosti.rangiranje import *
+from Funkcionalnosti.sortiranje import *
+from Funkcionalnosti.paginacija import *
 def menu():
     print("---------------------")
     print("\tSadrzaj: ")
@@ -27,17 +37,17 @@ def direktorijum(parser1,trie,g):
             if fn.endswith('.html') or fn.endswith('.htm'):
                 absPath = os.path.join(dirpath, fn)
                 parsed = parser1.parse(absPath)
-                g.addPage(absPath, parsed[0])
+                g.dodavanjeNoveStranice(absPath, parsed[0])
                 for word in parser1.words:
                     trie.insert(word, absPath)
     kraj = time.time()
     print(kraj - pocetak)
 
 if __name__ == "__main__":
-    parser1 = Parser()
+    parser = Parser()
     trie = Trie()
     g = Graph()
-    direktorijum(parser1,trie,g)
+    direktorijum(parser,trie,g)
     unos = -1
     while unos != 0:
         unos = menu()
@@ -47,69 +57,43 @@ if __name__ == "__main__":
             g = Graph()
             direktorijum(parser1,trie,g)
         elif unos == "2":
-            s = ParsirajUpit(trie) # s vraca trazenu listu i niz rijeci iz upita (s,exists)
-#1
+            s = ParsirajUpit(trie)  # s vraca trazenu listu i niz rijeci iz upita (s,exists)
+            # 1
             r = rjecnikZaRang(trie, s[1], s[0])
-            #normalanBroj je lista linkova i br reci u njima
-            rjecnikZaRangiranje = r[0]
-            normalanBroj = {}
-            normalanBroj2 = {}
-            for k in rjecnikZaRangiranje.keys():
-                normalanBroj[k] = rjecnikZaRangiranje[k]
-                normalanBroj2[k] = rjecnikZaRangiranje[k]
+            # r[0] zbir svih pojavljivanja r[1] pojavljivanje razlicitih reci
+            rjecnikZaRangiranje = r[0]  # link i ukupan br pojavljiavanja reci na njemu
+            recnikZbirSvihReciNaLinkuPom = {}
+            recnikZbirSvihReciNaLinku = {}
+            for link in rjecnikZaRangiranje.keys():
+                recnikZbirSvihReciNaLinkuPom[link] = rjecnikZaRangiranje[link]
+                recnikZbirSvihReciNaLinku[link] = rjecnikZaRangiranje[link]
 
+            rangRazlicitihReci = {}
+            rangRazlicitihReci = uticajRazlicitihReci(r[1])
 
+            rangUkupnoReci = {}
+            rangUkupnoReci = uticajBrojaReci(rjecnikZaRangiranje)
 
-            rang1 = {}
-            rang1 = uticajRazlicitihReci(r[1], normalanBroj)
-            # u rang1 se nalazi koji je stepen upitanju
-            uticajRazReci = {}
-            for k in rjecnikZaRangiranje.keys():
-                uticajRazReci[k] = rjecnikZaRangiranje[k]
+            rangSnagaLinkova = {}
+            rangSnagaLinkova = uticajVrednostiLinkova(g, rjecnikZaRangiranje.keys(), recnikZbirSvihReciNaLinkuPom)
 
-
-            rang2 = {}
-            w = uticajBrojaReci(rjecnikZaRangiranje)
-            uticajReci = {}
-            for k in rjecnikZaRangiranje.keys():
-                rang2[k] = w[k]
-
-
-            rang3 = {}
-
-            m= uticajVrednostiLinkova(g, rjecnikZaRangiranje.keys(), normalanBroj)
-
-            for k in rjecnikZaRangiranje.keys():
-                rang3[k] = m[k]
-
-            rang4 = {}
-            p = uticajBrojaLinkova(trie, g, rjecnikZaRangiranje, s[1])
-            for k in rjecnikZaRangiranje.keys():
-                rang4[k] = p[k]
+            rangBrojLinkova = {}
+            rangBrojLinkova = uticajBrojaLinkova(g, rjecnikZaRangiranje)
 
             RANG = {}
-            for r in rjecnikZaRangiranje.keys():
-                RANG[r] = rang1[r]-rang2[r]-rang3[r]-rang4[r]
-            if len(rjecnikZaRangiranje)!= 0:
+            RANG = formiranjeRanga(rangRazlicitihReci, rangUkupnoReci, rangSnagaLinkova, rangBrojLinkova)
 
-                #("RANG\t\tBR RECI\t\tR1\t\t\tR2\printt\t\tR3\t\t\tR4\t\t\t\t\t\t\t\t\t\t\tlink" )
-                #for a in rjecnikZaRangiranje.keys():
-                    #cvor = Ispis(normalanBroj2[a],rang1[a],rang2[a],rang3[a],rang4[a],RANG[a],a)
-                    #cvor.Ispisi()
-
+            if len(rjecnikZaRangiranje) != 0:
                 listaZaSortiranje = []
                 for strana in rjecnikZaRangiranje.keys():
-                    listaZaSortiranje.append(PageRang(strana,RANG[strana]))
+                    listaZaSortiranje.append(PageRang(strana, RANG[strana]))
 
-                #SORTIRANJE
+                # SORTIRANJE
                 heap_sort(listaZaSortiranje)
-                #print("************************************")
-                #print("Sortirani rangocvi su:")
-                #for i in listaZaSortiranje:
-                #    print(i.getPage(),i.getRang())
 
-                #PAGINACIJA
-                paginacija(listaZaSortiranje,normalanBroj2,rang1,rang2,rang3,rang4)
+                # PAGINACIJA
+                paginacija(listaZaSortiranje, recnikZbirSvihReciNaLinku, rangRazlicitihReci, rangUkupnoReci,
+                           rangSnagaLinkova, rangBrojLinkova)
 
 
             else:

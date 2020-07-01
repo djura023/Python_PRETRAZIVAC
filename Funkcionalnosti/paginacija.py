@@ -6,8 +6,7 @@ def ispisiLinkove(linkovi,r0,r1,r2,r3,r4):
     print(100 * '*')
     for link in linkovi:
         print("%0.3f\t\t%0.3f\t\t%0.3f\t\t%0.3f\t\t%0.3f\t\t%0.3f\t\t%s" % (
-        link.getRang(), r0[link.getPage()], r1[link.getPage()], r2[link.getPage()],
-        r3[link.getPage()], r4[link.getPage()], link.getPage()))
+        link.getBrojRanga(), r0[link.getLink()], r1[link.getLink()], r2[link.getLink()],r3[link.getLink()], r4[link.getLink()], link.getLink()))
     print(100 * '*')
 
 def paginacija(linkovi,r0,r1,r2,r3,r4):

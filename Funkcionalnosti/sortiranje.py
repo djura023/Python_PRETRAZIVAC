@@ -5,12 +5,12 @@ def heapify(arr, n, i):
 
     # See if left child of root exists and is
     # greater than root
-    if l < n and arr[i].getRang() > arr[l].getRang():
+    if l < n and arr[i].getBrojRanga() > arr[l].getBrojRanga():
         largest = l     #ovde formiramo min heap
 
     # See if right child of root exists and is
     # greater than root
-    if r < n and arr[largest].getRang() > arr[r].getRang():
+    if r < n and arr[largest].getBrojRanga() > arr[r].getBrojRanga():
         largest = r    #formiramo min heap
 
     # Change root, if needed

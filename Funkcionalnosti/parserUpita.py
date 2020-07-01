@@ -1,3 +1,7 @@
+from StrukturePodataka.trieStruct import *
+from StrukturePodataka.set import *
+from StrukturePodataka.graf import *
+
 def ParsirajUpit(trie):
     upit = input("Unesite upit za pretragu:")
     delovi = upit.split()
@@ -23,28 +27,28 @@ def ParsirajUpit(trie):
             i = i + 1
         else:
             if not trie.search(rec):
-             #   rezultatPretrage[i] = Set()
+                rezultatPretrage[i] = Set()
                 i = i + 1
             else:
-                rezultatPretrage[i] = trie.search(rec)[2].IntoSet() #dobijamo linkove na koje pokazuje taj cvor ili reci AND OR I NOT
-                #trazenaLista[i] = root.search(rec)[2].IntoSet()
+                rezultatPretrage[i] = trie.search(rec)[2].IntoSet()
                 i = i + 1
 
-   s = Set()
+
+    s = Set()
     i = 0
     if len(rezultatPretrage) == 3:
-        s = s.Unija(rezultatPretrage[0])
+        s = s.unijaRecnika(rezultatPretrage[0])
         if rezultatPretrage[1] == "and":
-            s = s.Presek(rezultatPretrage[2])
+            s = s.presekRecnika(rezultatPretrage[2])
         elif rezultatPretrage[1] == "not":
-            s = s.Komplement(rezultatPretrage[2])
+            s = s.komplementRecnika(rezultatPretrage[2])
         elif rezultatPretrage[1] == "or":
             s = s.Unija(rezultatPretrage[2])
         else:
-            s = s.Unija(rezultatPretrage[1])
-            s = s.Unija(rezultatPretrage[2])
+            s = s.unijaRecnika(rezultatPretrage[1])
+            s = s.unijaRecnika(rezultatPretrage[2])
     else:
         while i < len(rezultatPretrage):
-            s = s.Unija(rezultatPretrage[i])
+            s = s.unijaRecnika(rezultatPretrage[i])
             i = i + 1
-    return s,delovi
+    return s, delovi
