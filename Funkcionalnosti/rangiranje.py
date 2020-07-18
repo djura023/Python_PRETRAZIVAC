@@ -36,7 +36,7 @@ def rjecnikZaRang(root, nizReciIzUpita, linokviPretrage,graf):
     reciZaPrebrojavanje = {}
 
     # inicijalizovanje recnika
-    for link in linokviPretrage.kljucevi():
+    for link in linokviPretrage.recnik:
         recnikZaUkupnoPojavljivanjeReciNaLinku[os.path.abspath(link)] = 0
         recnikZaRazliciteReci[os.path.abspath(link)]=0
         recnikSnageLinkova[os.path.abspath(link)] = 0
@@ -60,25 +60,28 @@ def rjecnikZaRang(root, nizReciIzUpita, linokviPretrage,graf):
         #popunjavanje potrebnih recnika koji se salju dalje
         for link in recnikBrojaPonavljanjaJedneReciULink:
             if link in recnikZaUkupnoPojavljivanjeReciNaLinku.keys():
-                #if (len(graf.getUlazneLinkove(os.path.abspath(link))) != 0):
-                 #   recnikBrojaLinkova[link] = len(graf.getUlazneLinkove(os.path.abspath(link)))
+                if (len(graf.getUlazneLinkove(os.path.abspath(link))) != 0):
+                    recnikBrojaLinkova[link] = len(graf.getUlazneLinkove(os.path.abspath(link)))
                 recnikZaUkupnoPojavljivanjeReciNaLinku[link] += recnikBrojaPonavljanjaJedneReciULink[link]
                 recnikZaRazliciteReci[link]+=1
 
         # recnik -> kljuc je snaga linkova
-        #for odredjeniLink in recnikZaUkupnoPojavljivanjeReciNaLinku :
-        #    for linkPokazivac in graf.cvorovi[odredjeniLink].getUlazniLinkovi() :
-        #        if linkPokazivac in recnikZaUkupnoPojavljivanjeReciNaLinku :
-        #            recnikSnageLinkova[odredjeniLink] += recnikZaUkupnoPojavljivanjeReciNaLinku[linkPokazivac]
+        for odredjeniLink in recnikZaUkupnoPojavljivanjeReciNaLinku :
+            for linkPokazivac in graf.cvorovi[odredjeniLink].getUlazniLinkovi() :
+                if linkPokazivac in recnikZaUkupnoPojavljivanjeReciNaLinku :
+                    recnikSnageLinkova[odredjeniLink] += recnikZaUkupnoPojavljivanjeReciNaLinku[linkPokazivac]
 
-        #for link in recnikZaUkupnoPojavljivanjeReciNaLinku :
-        #    if (len(graf.getUlazneLinkove(os.path.abspath(link))) != 0):
-        #        recnikBrojaLinkova[link] = len(graf.getUlazneLinkove(os.path.abspath(link)))
+        for link in recnikZaUkupnoPojavljivanjeReciNaLinku :
+            if (len(graf.getUlazneLinkove(os.path.abspath(link))) != 0):
+                recnikBrojaLinkova[link] = len(graf.getUlazneLinkove(os.path.abspath(link)))
+                recnikRangova[link] = float(recnikZaRazliciteReci) + (float)(1./(recnikZaUkupnoPojavljivanjeReciNaLinku[link]+
+                                                                   recnikBrojaLinkova[link] + recnikSnageLinkova[link]
+                                                                   + graf.cvorovi[odredjeniLink].getRang()))
 
-        #for odredjeniLink in recnikZaUkupnoPojavljivanjeReciNaLinku :
-        #    recnikRangova[link] = Rang(recnikZaUkupnoPojavljivanjeReciNaLinku[odredjeniLink],
-        #                               recnikZaRazliciteReci[odredjeniLink],graf.cvorovi[odredjeniLink].getRang(),recnikBrojaLinkova[odredjeniLink],
-        #                               recnikSnageLinkova[odredjeniLink],recnikZaUkupnoPojavljivanjeReciNaLinku[odredjeniLink],odredjeniLink)
+        for odredjeniLink in recnikZaUkupnoPojavljivanjeReciNaLinku :
+            recnikRangova[link] = Rang(recnikZaUkupnoPojavljivanjeReciNaLinku[odredjeniLink],
+                                       recnikZaRazliciteReci[odredjeniLink],graf.cvorovi[odredjeniLink].getRang(),recnikBrojaLinkova[odredjeniLink],
+                                       recnikSnageLinkova[odredjeniLink],recnikZaUkupnoPojavljivanjeReciNaLinku[odredjeniLink],odredjeniLink)
 
 
     return recnikZaUkupnoPojavljivanjeReciNaLinku,recnikZaRazliciteReci
