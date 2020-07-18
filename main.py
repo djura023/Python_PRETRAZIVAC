@@ -1,18 +1,22 @@
-from Python_PRETRAZIVAC.Funkcionalnosti.parser import Parser
-from Python_PRETRAZIVAC.Funkcionalnosti.parserUpita import *
-from Python_PRETRAZIVAC.StrukturePodataka.graf import *
+
+from StrukturePodataka.strukturaStabla import *
+from StrukturePodataka.set import Set
+from Funkcionalnosti.parser import Parser
+from Funkcionalnosti.parserUpita import *
+from StrukturePodataka.graf import *
+from StrukturePodataka.rang import *
 import time
-from Python_PRETRAZIVAC.Funkcionalnosti.rangiranje import *
-from Python_PRETRAZIVAC.Funkcionalnosti.sortiranje import *
-from Python_PRETRAZIVAC.Funkcionalnosti.paginacija import *
+from Funkcionalnosti.rangiranje import *
+from Funkcionalnosti.sortiranje import *
+from Funkcionalnosti.paginacija import *
 def menu():
     print("---------------------")
-    print("\tSadrzaj: ")
-    print("1. Promenite direktorijum ")
-    print("2. Unesite upit za pretragu ")
-    print("0. Izlaz")
+    print("\t\tSadrzaj: ")
+    print("0. Novi direktorijum ")
+    print("1. Unesite upit za pretragu ")
+    print("2. Kraj programa")
     print("---------------------")
-    unos = input("Izaberite opciju : ")
+    unos = input("Izaberite : ")
     return unos
 
 
@@ -25,48 +29,55 @@ def unosenjeRangaCvorova(g) :
            for ulazniLink in g.getUlazneLinkove(link) :
                 g.cvorovi[link].updateRang(g.cvorovi[ulazniLink].getRang()/len(g.cvorovi[ulazniLink].getIzlazniLinkovi()))
 
-def direktorijum(parser1,trie,g):
-    print("Trenutni direktorijum je: " + os.getcwd())
+def direktorijum(parser,stablo,graf):
+    print("Nalazite se u direktorijumu : " + os.getcwd())
     print("Unesite direktorijum koji zelite da parsirate: ")
     dir = input()
 
+    proveraDirektorijuma(dir)
+    dodajAbsolutnuPutanju(dir)
+
+    pocetak = time.time()
+    popuniGrafIStablo(dir,parser,stablo,graf)
+    unosenjeRangaCvorova(graf)
+    kraj = time.time()
+    print(kraj - pocetak)
+
+def proveraDirektorijuma(dir):
     while (not os.path.isdir(dir)):
         print("Ne postoji uneti direktorijum,unesite novi:")
         dir = input()
 
+def dodajAbsolutnuPutanju(dir):
     if not os.path.isabs(dir):
         dir = os.path.abspath(dir)
-    pocetak = time.time()
+
+def popuniGrafIStablo(dir,parser,stablo,graf):
     for dirpath, dirnames, files in os.walk(str(dir)):
         for fn in files:
             if fn.endswith('.html') or fn.endswith('.htm'):
                 absPath = os.path.join(dirpath, fn)
-                parsed = parser1.parse(absPath)
-                g.dodavanjeNoveStranice(absPath, parsed[0])
-                for word in parser1.words:
-                    trie.insert(word, absPath)
-    # ovde je graf popunjen i prelazi se na formiranje rangova
-    unosenjeRangaCvorova(g)
-
-    kraj = time.time()
-    print(kraj - pocetak)
+                parsed = parser.parse(absPath)
+                graf.dodavanjeNoveStranice(absPath, parsed[0])
+                for word in parser.words:
+                    stablo.dodaj(word, absPath)
 
 if __name__ == "__main__":
     parser = Parser()
-    trie = Trie()
-    g = Graph()
-    direktorijum(parser,trie,g)
+    stablo = Stablo()
+    graf = Graph()
+    direktorijum(parser,stablo,graf)
     unos = -1
-    while unos != 0:
+    while True:
         unos = menu()
-        if unos == "1":
-            parser1 = Parser()
-            trie = Trie()
-            g = Graph()
-            direktorijum(parser1,trie,g)
-        elif unos == "2":
-            s = ParsirajUpit(trie)
-            r = rjecnikZaRang(trie, s[1], s[0])
+        if unos == "0":
+            parser = Parser()
+            stablo = Stablo()
+            graf = Graph()
+            direktorijum(parser,stablo,graf)
+        elif unos == "1":
+            s = parsirajUpit(stablo)
+            r = rjecnikZaRang(stablo, s[1], s[0])
             rjecnikZaRangiranje = r[0]
             recnikZbirSvihReciNaLinkuPom = {}
             recnikZbirSvihReciNaLinku = {}
@@ -81,10 +92,10 @@ if __name__ == "__main__":
             rangUkupnoReci = uticajBrojaReci(rjecnikZaRangiranje)
 
             rangSnagaLinkova = {}
-            rangSnagaLinkova = uticajVrednostiLinkova(g, rjecnikZaRangiranje.keys(), recnikZbirSvihReciNaLinkuPom)
+            rangSnagaLinkova = uticajVrednostiLinkova(graf, rjecnikZaRangiranje.keys(), recnikZbirSvihReciNaLinkuPom)
 
             rangBrojLinkova = {}
-            rangBrojLinkova = uticajBrojaLinkova(g, rjecnikZaRangiranje)
+            rangBrojLinkova = uticajBrojaLinkova(graf, rjecnikZaRangiranje)
 
             RANG = {}
             RANG = formiranjeRanga(rangRazlicitihReci, rangUkupnoReci, rangSnagaLinkova, rangBrojLinkova)
@@ -110,5 +121,5 @@ if __name__ == "__main__":
                 paginacija(recnikRangova)
             else:
                 print("Nema fajlova koji zadovoljavaju pretragu!")
-        elif unos == "0":
+        elif unos == "2":
             break

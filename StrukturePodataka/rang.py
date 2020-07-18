@@ -20,3 +20,4 @@ class Rang:
         return self.r0
     def get_r4(self):
         return self.r0
+

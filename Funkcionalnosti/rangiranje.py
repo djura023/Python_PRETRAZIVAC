@@ -45,12 +45,14 @@ def rjecnikZaRang(root, nizReciIzUpita, linokviPretrage):
 
     # dobijanje cvora za odredjenu rec
     for rec in reciZaPrebrojavanje:
-        cvorNaKomSeZavrsavaRec = root.nadjiCvor(rec)[0] # vrednost treba da bude cvor na kom  se zavrsava rijec
+        cvorNaKomSeZavrsavaRec = root.nadjiCvor(rec) # vrednost treba da bude cvor na kom  se zavrsava rijec
         recnikBrojaPonavljanjaJedneReciULink = {}
 
         # popunjavanje recnika (vrednost = link, kljuc = broj pojavljivanja jedne reci na njemu)
-        for pom in cvorNaKomSeZavrsavaRec.links:
-            recnikBrojaPonavljanjaJedneReciULink[os.path.abspath(pom)] = cvorNaKomSeZavrsavaRec.links[pom]
+
+        for pom in cvorNaKomSeZavrsavaRec[0].linkovi:
+            recnikBrojaPonavljanjaJedneReciULink[os.path.abspath(pom)]=cvorNaKomSeZavrsavaRec[0].linkovi[pom]
+
 
         #popunjavanje potrebnih recnika koji se salju dalje
         for link in recnikBrojaPonavljanjaJedneReciULink:

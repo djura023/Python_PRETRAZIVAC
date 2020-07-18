@@ -11,6 +11,7 @@ class Cvor :
 
     def getIzlazniLinkovi(self):
         return self.izlazniLinkovi
+
     def getRang(self):
         return self.rang
 
