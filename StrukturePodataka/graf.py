@@ -1,44 +1,42 @@
 import os
 
+from StrukturePodataka.cvor import Cvor
 from StrukturePodataka.trieStruct import Trie
 from Funkcionalnosti.parser import Parser
 
 class Graph:
     def __init__(self):
-        self.ulazniLinkovi = {}
-        self.izlazniLinkovi = {}
+       self.cvorovi = {}
 
     def dodavanjeNoveStranice(self, link, linkoviNaKojePokazuje):
         self.dodavanjeLinka(link)
         self.dodavanjeGrana(link,linkoviNaKojePokazuje)
 
     def dodavanjeGrana(self,link,linkoviNaKojePokazuje):
-        for linkNaKojiPokazuje in linkoviNaKojePokazuje:
-            self.dodavanjeGrane(link, linkNaKojiPokazuje)
+        if link not in self.cvorovi.keys() :
+            novi = Cvor(link,[],linkoviNaKojePokazuje)
+            self.cvorovi[link] = novi
+        else :
+            for linkNaKojiPokazuje in linkoviNaKojePokazuje:
+                if linkNaKojiPokazuje not in self.cvorovi.keys() :
+                    novi = Cvor(linkNaKojiPokazuje,[],[])
+                    self.cvorovi[linkNaKojiPokazuje] = novi
+                self.cvorovi[linkNaKojiPokazuje].addUlazniLink(link)
+                self.cvorovi[link].addIzlazniLink(linkNaKojiPokazuje)
+                #self.dodavanjeGrane(link, linkNaKojiPokazuje)
 
 
     def dodavanjeLinka(self, link):
-        if link not in self.izlazniLinkovi.keys():
-            self.izlazniLinkovi[link] = []
-        if link not in self.ulazniLinkovi.keys():
-            self.ulazniLinkovi[link] = []
+        if link not in self.cvorovi.keys() :
+            novi = Cvor(link,[],[])
+            self.cvorovi[link] = novi
 
-    def dodavanjeGrane(self, pocetniLink, krajnjiLink):
-        if pocetniLink not in self.ulazniLinkovi.keys():
-            self.ulazniLinkovi[pocetniLink] = []
-        if krajnjiLink not in self.ulazniLinkovi.keys():
-            self.ulazniLinkovi[krajnjiLink] = []
+    #def getLinkove(self):
+    #    return list(
+    #        self.cvorovi.keys())
 
-        self.izlazniLinkovi[pocetniLink].append(krajnjiLink)
-        self.ulazniLinkovi[krajnjiLink].append(pocetniLink)
-
-
-    def getLinkove(self):
-        return list(
-            self.ulazniLinkovi.keys())
-
-    def getIzlazneLinkove(self, link):
-        return list(self.izlazniLinkovi[link])
+    #def getIzlazneLinkove(self, link):
+    #    return self.cvorovi[link].getIzlazniLinkovi()
 
     def getUlazneLinkove(self, link):
-        return list(self.ulazniLinkovi[link])
+        return self.cvorovi[link].getUlazniLinkovi()

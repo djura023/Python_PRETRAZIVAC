@@ -1,7 +1,9 @@
 import os
 import math
+import  networkx as nx
+import random
+import operator
 class PageRang:
-
     def __init__(self,link,brojZaRangiranje):
         self.link = link
         self.brojZaRangiranje = brojZaRangiranje
@@ -62,7 +64,6 @@ def rjecnikZaRang(root, nizReciIzUpita, linokviPretrage):
 
     return recnikZaUkupnoPojavljivanjeReciNaLinku,recnikZaRazliciteReci
 
-
 def uticajVrednostiLinkova(root, linkoviUpita, rjecnikUpita):
     rang3={}
     broj = 10 * 0.5
@@ -105,7 +106,6 @@ def uticajRazlicitihReci(mapaRazlicitihReci):
     for link in mapaRazlicitihReci.keys():
         rang1[link]= math.pow(rang1[link],mapaRazlicitihReci[link])
     return rang1
-
 
 def uticajBrojaReci(mapaZaRang):
     broj = 10*0.3

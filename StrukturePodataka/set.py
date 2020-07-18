@@ -7,6 +7,7 @@ class Set():
             self.recnik = skup.recnik
 
     def unijaRecnika(self, drugiSkup):
+
         unijaSkupova = Set()
         for elementPrvogSkupa in self.recnik:
             unijaSkupova.dodavanjeLinka(elementPrvogSkupa)

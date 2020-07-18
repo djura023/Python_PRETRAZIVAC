@@ -15,7 +15,7 @@ def ParsirajUpit(trie):
                 print("Neispravan upit,ukoliko upit ima logicki operator mora biti u formatu rec1 operator rec2")
                 ParsirajUpit(trie)
     else:
-        if delovi[0].lower() in ("and", "or") or delovi[-1].lower() in ("and", "or", "not"):
+        if delovi[0].lower() in ("and", "or", "not") or delovi[-1].lower() in ("and", "or", "not"):
             print("Neispravan upit,ukoliko upit ima logicki operator mora biti u formatu rec1 operator rec2")
             ParsirajUpit(trie)
 
@@ -51,4 +51,4 @@ def ParsirajUpit(trie):
         while i < len(rezultatPretrage):
             s = s.unijaRecnika(rezultatPretrage[i])
             i = i + 1
-    return s, delovi
+    return s, delovi # delovi su sve reci koje se unesu sa logickim operatorima

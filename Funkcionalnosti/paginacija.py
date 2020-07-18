@@ -1,93 +1,186 @@
 import math
+import winsound
+class Fore():
+    BLACK = '\033[30m'
+    RED = '\033[31m'
+    GREEN = '\033[32m'
+    YELLOW = '\033[33m'
+    BLUE = '\033[34m'
+    MAGENTA = '\033[35m'
+    CYAN = '\033[36m'
+    WHITE = '\033[37m'
+    UNDERLINE = '\033[4m'
+    RESET = '\033[0m'
 
-def ispisiLinkove(linkovi,r0,r1,r2,r3,r4):
-    print(100 * '*')
-    print("RANG\t\tBR RECI\t\tR1\t\t\tR2\t\t\tR3\t\t\tR4\t\t\t\t\t\t\t\t\t\t\tlink")
-    print(100 * '*')
-    for link in linkovi:
-        print("%0.3f\t\t%0.3f\t\t%0.3f\t\t%0.3f\t\t%0.3f\t\t%0.3f\t\t%s" % (
-        link.getBrojRanga(), r0[link.getLink()], r1[link.getLink()], r2[link.getLink()],r3[link.getLink()], r4[link.getLink()], link.getLink()))
-    print(100 * '*')
+def ispisiRangove(recnikRangova):
+    print(Fore.WHITE + 170 * '*')
+    print(Fore.BLUE +70*' '+ "\033[1m" +"SADRZAJ" + "\033[0m")
+    print(Fore.WHITE + 170 * '-')
+    print(Fore.BLUE+"RANG"+8*' '+"BROJ"+7*' '+"RAZLICITE"+4*' '+"UTICAJ BROJA"+5*' '+"UTICAJ SNAGE"+4*' '+"UTICAJ BROJA"+45*' '+"LINKOVI")
+    print(Fore.BLUE+"LINKA"+7*' '+"RECI"+9*' '+"RECI"+11*' '+"RECI"+12*' '+"LINKOVA"+9*' '+"LINKOVA")
+    print(Fore.WHITE+170 * '-')
+    for link in recnikRangova.keys():
+        print(Fore.CYAN+ "%-12.3f%-12.3f%-12.3f\t%-12.3f\t%-12.3f\t%-12.3f\t\t\t%s" % (
+        recnikRangova[link][0],recnikRangova[link][1],recnikRangova[link][2],recnikRangova[link][3],recnikRangova[link][4],recnikRangova[link][5],link))
+    print(Fore.WHITE+170 * '*')
 
-def paginacija(linkovi,r0,r1,r2,r3,r4):
-    trenutnaStrana = 1
-    ukupnoLinkova = len(linkovi)
-    brojLinkovaKojiSePrikazuju = 10
+def odredjivanjeLinkovaZaPrikaz(linkovi,brojLinkovaKojiSePrikazuju, stranicaKojaSePrikazuje)   :
+    sviLinkovi = []
+    for link in linkovi :
+        sviLinkovi.append(link)
+    indexPrvogLinka = (stranicaKojaSePrikazuje - 1) * brojLinkovaKojiSePrikazuju
+    indexPoslednjegLinka = (stranicaKojaSePrikazuje - 1) * brojLinkovaKojiSePrikazuju + brojLinkovaKojiSePrikazuju
+    return sviLinkovi[indexPrvogLinka: indexPoslednjegLinka]
 
+def odredjivanjeStranica(ukupnoLinkova,brojLinkovaKojiSePrikazuju,stranicaKojaSePrikazuje):
+    stranice = []
+    for brStr in range(1, math.ceil(ukupnoLinkova / brojLinkovaKojiSePrikazuju) + 1):
+        stranice.append(brStr)
+    print(Fore.BLUE+'STRANA  : ' + str(stranicaKojaSePrikazuje) + ' / ' + str(len(stranice)))
+    if stranicaKojaSePrikazuje > len(stranice) :
+        stranicaKojaSePrikazuje = len(stranice)
+    return stranice
+
+def izmeniBrojLinkovaKojiSePrikazuju():
+    fr = 2000
+    d = 50
     while True:
-        brojLinkovaKojiSePrikazuju = input("Unesite broj linkova koji zelite da se prikaze na jednoj stranici :  ")
-        try:
-            brojLinkovaKojiSePrikazuju = int(brojLinkovaKojiSePrikazuju)
-        except:
-            print('Unesite broj : ')
+        ukupnoPrikazanihLinkova = input(Fore.BLUE+ "Unesite zeljeni broj :  ")
+        if not ukupnoPrikazanihLinkova.isdigit():
+            greska()
             continue
-
-        if brojLinkovaKojiSePrikazuju < 1:
-            print("Unesite prirodan broj : ")
+        ukupnoPrikazanihLinkova = int(ukupnoPrikazanihLinkova)
+        if ukupnoPrikazanihLinkova < 1:
+            greska()
             continue
         break
+    return  ukupnoPrikazanihLinkova
+
+def izaberiBrojStranice(ukupno):
+    fr = 2000
+    d = 50
+    while True :
+        brStr = input(Fore.BLUE+"Unesite broj stranice na koju zelite da predjete : ")
+        if not brStr.isdigit():
+            greska()
+            continue
+        brStr = int(brStr)
+        if brStr < 1 or brStr > ukupno:
+            greska()
+            continue
+        break
+    return brStr
+
+def greska() :
+    fr = 2000
+    d = 50
+    print(Fore.RED + 'Pogresan unos, pokusajte ponovo. ')
+    winsound.Beep(fr, d)
+
+def izaberiOpciju(stranice,indikator) :
+    ponovi = True
+    odgovor = ""
+
+    while ponovi:
+        if(indikator=="pocetak") :
+            print(Fore.GREEN + "\033[1m" + """
+                    IZABERITE :
+            2. Naredna stranica
+            3.Promeni broj linkova koji se prikazuju
+            4.Unesi broj stranice na koju zelite da odete
+            5.Izbor prethodnih opcija
+            """ + "\033[0m")
+        elif (indikator == "kraj"):
+            print(Fore.GREEN + "\033[1m" + """
+                    IZABERITE :
+            1. Prethodna stranica
+            3.Promeni broj linkova koji se prikazuju
+            4.Unesi broj stranice na koju zelite da odete
+            5.Izbor prethodnih opcija
+            """ + "\033[0m")
+        else :
+            print(Fore.GREEN+"\033[1m" +"""
+                    IZABERITE :
+            1. Prethodna stranica
+            2. Naredna stranica
+            3.Promeni broj linkova koji se prikazuju
+            4.Unesi broj stranice na koju zelite da odete
+            5.Izbor prethodnih opcija
+            """ + "\033[0m")
+        odgovor = input(Fore.BLUE + "\033[1m" +"\tKoju opciju birate? " + "\033[0m")
+        if not odgovor.isdigit():
+            greska()
+            continue
+        odgovor = int(odgovor)
+        if indikator == "pocetak" and odgovor == 1 :
+            greska()
+            continue
+        if indikator == "kraj" and odgovor == 2:
+            greska()
+            continue
+        if odgovor > 5 or odgovor < 1 :
+            greska()
+            continue
+        ponovi= False
+
+    return odgovor
+
+def paginacija(recnikRangova):
+
+    stranicaKojaSePrikazuje = 1
+    ukupnoLinkova = len(recnikRangova)
+    ukupnoPrikazanihLinkova = 10
+    indikator = ""
+    stranice = []
 
     while True:
-        pocetak = (trenutnaStrana - 1) * brojLinkovaKojiSePrikazuju
-        kraj = (trenutnaStrana - 1) * brojLinkovaKojiSePrikazuju + brojLinkovaKojiSePrikazuju
-        linkoviZaIspis = linkovi[ pocetak : kraj]
+        prikaziOve = {}
 
-        ispisiLinkove(linkoviZaIspis,r0,r1,r2,r3,r4)
+        zaPrikaz = odredjivanjeLinkovaZaPrikaz(recnikRangova.keys(),ukupnoPrikazanihLinkova,stranicaKojaSePrikazuje)
+        for link in zaPrikaz :
+            prikaziOve[link] = recnikRangova[link]
+        ispisiRangove(prikaziOve)
+        stranice =odredjivanjeStranica(ukupnoLinkova,ukupnoPrikazanihLinkova,stranicaKojaSePrikazuje)
+        izabranaOpcija = izaberiOpciju(stranice,indikator)
 
-        stranice = []
-        for brojStranice in range(1, math.ceil(ukupnoLinkova / brojLinkovaKojiSePrikazuju) + 1):
-            stranice.append(brojStranice)
-
-        print('Nalazite se na stranici : '+ str(trenutnaStrana)+' / '+str(len(stranice)))
-
-        choice = izaberiOpciju(stranice)
-        if not choice:
-            print('Pogresan unos, pokusajte ponovo')
-            choice = izaberiOpciju(stranice)
-        if not choice.isdigit() and choice.lower() not in ("n","b","c","x") :
-            print('Pogresan unos, pokusajte ponovo')
-            choice = izaberiOpciju(stranice)
-
-        if choice.lower() == "x":
+        if izabranaOpcija == 5:
+            indikator=""
             break
-        elif choice.lower() == "n":
-            if(trenutnaStrana < len(stranice)):
-                trenutnaStrana = trenutnaStrana+1
+        elif izabranaOpcija ==4:
+            indikator=""
+            stranicaKojaSePrikazuje = izaberiBrojStranice(len(stranice))
+            continue
+        elif izabranaOpcija == 3:
+            indikator = ""
+            ukupnoPrikazanihLinkova = izmeniBrojLinkovaKojiSePrikazuju()
+            stranice = odredjivanjeStranica(ukupnoLinkova,ukupnoPrikazanihLinkova,stranicaKojaSePrikazuje)
+            if stranicaKojaSePrikazuje > len(stranice) :
+                stranicaKojaSePrikazuje =len(stranice)
+            continue
+        elif izabranaOpcija == 2:
+            indikator=""
+            if(stranicaKojaSePrikazuje < len(stranice)):
+                stranicaKojaSePrikazuje +=1
+                continue
             else:
-                print("Dosli ste do poslednje stanice!")
-                choice = izaberiOpciju(stranice)
-
-        elif choice.lower() == "b":
-            if (trenutnaStrana > 1):
-                trenutnaStrana = trenutnaStrana - 1
+                print(Fore.RED+"PRIKAZANA JE POSLEDNJA STRANICA")
+                indikator = "kraj"
+                continue
+        elif izabranaOpcija == 1:
+            indikator = ""
+            if (stranicaKojaSePrikazuje > 1):
+                stranicaKojaSePrikazuje -= 1
+                continue
             else:
-                print("Nalazite se na pocetnoj stanici!")
-                choice = izaberiOpciju(stranice)
-        elif choice.lower() == "c":
-            paginacija(linkovi,r0,r1,r2,r3,r4)
-        elif choice.isdigit() not in stranice and choice.lower() not in ("n","b","c","x"):
-            print('Pogresan unos, pokusajte ponovo')
-            choice = izaberiOpciju(stranice)
-        else:
-            unesenaVrednost = int(choice)
-            if(unesenaVrednost <= len(stranice) and unesenaVrednost>0):
-                 trenutnaStrana = unesenaVrednost
-            else:
-                print('Pogresan unos broja strane, pokusajte ponovo')
-                choice = izaberiOpciju(stranice)
+                print(Fore.RED+"PRIKAZANA JE PRVA STRANICA")
+                indikator = "pocetak"
 
 
-def izaberiOpciju(stranice) :
-        print()
-        print()
-        print("Izaberite zeljenu opciju :")
-        print()
-        print("1.   Predjite na prethodnu stranicu (B) :")
-        print("2.   Predjite na narednu stranicu (N) :")
-        print("3.   Izaberite novi broj prikazanih linkova (C) :")
-        print("4.   Izadjite iz programa (X)")
-        unesenaVrednost = input('Unesite opciju  (ili broj strane na koju zelite da odete): ')
-        return  unesenaVrednost
+
+
+
+
+
 
 
 

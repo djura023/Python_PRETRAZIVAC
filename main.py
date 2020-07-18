@@ -1,9 +1,6 @@
-from StrukturePodataka.trieStruct import *
-from StrukturePodataka.set import Set
-from StrukturePodataka.ispis import *
-from Funkcionalnosti.parser import Parser
 from Funkcionalnosti.parserUpita import *
 from StrukturePodataka.graf import *
+from StrukturePodataka.rang import *
 import time
 import os
 from Funkcionalnosti.rangiranje import *
@@ -85,13 +82,21 @@ if __name__ == "__main__":
                 listaZaSortiranje = []
                 for strana in rjecnikZaRangiranje.keys():
                     listaZaSortiranje.append(PageRang(strana, RANG[strana]))
+                recnikRangova = {}
+                #lista rangova
 
                 # SORTIRANJE
                 heap_sort(listaZaSortiranje)
-
+                for pageRang in listaZaSortiranje:
+                    recnikRangova[pageRang.link]=[]
+                    recnikRangova[pageRang.link].append(RANG[pageRang.link])
+                    recnikRangova[pageRang.link].append(recnikZbirSvihReciNaLinku[pageRang.link])
+                    recnikRangova[pageRang.link].append(rangRazlicitihReci[pageRang.link])
+                    recnikRangova[pageRang.link].append(rangUkupnoReci[pageRang.link])
+                    recnikRangova[pageRang.link].append(rangSnagaLinkova[pageRang.link])
+                    recnikRangova[pageRang.link].append(rangBrojLinkova[pageRang.link])
                 # PAGINACIJA
-                paginacija(listaZaSortiranje, recnikZbirSvihReciNaLinku, rangRazlicitihReci, rangUkupnoReci,
-                           rangSnagaLinkova, rangBrojLinkova)
+                paginacija(recnikRangova)
             else:
                 print("Nema fajlova koji zadovoljavaju pretragu!")
         elif unos == "0":
