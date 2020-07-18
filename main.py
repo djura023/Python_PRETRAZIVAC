@@ -31,11 +31,11 @@ def unosenjeRangaCvorova(g) :
 
 def direktorijum(parser,stablo,graf):
     print("Nalazite se u direktorijumu : " + os.getcwd())
-    print("Unesite direktorijum koji zelite da parsirate: ")
+    print("Unesite direktorijum za parsiranje: ")
     dir = input()
 
     proveraDirektorijuma(dir)
-    dodajAbsolutnuPutanju(dir)
+    dir = dodajAbsolutnuPutanju(dir)
 
     pocetak = time.time()
     popuniGrafIStablo(dir,parser,stablo,graf)
@@ -45,22 +45,23 @@ def direktorijum(parser,stablo,graf):
 
 def proveraDirektorijuma(dir):
     while (not os.path.isdir(dir)):
-        print("Ne postoji uneti direktorijum,unesite novi:")
+        print("Ne postoji uneti direktorijum,unesite drugi:")
         dir = input()
 
 def dodajAbsolutnuPutanju(dir):
     if not os.path.isabs(dir):
         dir = os.path.abspath(dir)
-
+    return dir
 def popuniGrafIStablo(dir,parser,stablo,graf):
     for dirpath, dirnames, files in os.walk(str(dir)):
         for fn in files:
             if fn.endswith('.html') or fn.endswith('.htm'):
                 absPath = os.path.join(dirpath, fn)
                 parsed = parser.parse(absPath)
-                graf.dodavanjeNoveStranice(absPath, parsed[0])
                 for word in parser.words:
                     stablo.dodaj(word, absPath)
+                graf.dodavanjeNoveStranice(absPath, parsed[0])
+
 
 if __name__ == "__main__":
     parser = Parser()
@@ -76,7 +77,11 @@ if __name__ == "__main__":
             graf = Graph()
             direktorijum(parser,stablo,graf)
         elif unos == "1":
-            s = parsirajUpit(stablo)
+            while True:
+                s = parsirajUpit(stablo)
+                if s != -1:
+                  break
+
             r = rjecnikZaRang(stablo, s[1], s[0])
             rjecnikZaRangiranje = r[0]
             recnikZbirSvihReciNaLinkuPom = {}
@@ -120,6 +125,6 @@ if __name__ == "__main__":
                 # PAGINACIJA
                 paginacija(recnikRangova)
             else:
-                print("Nema fajlova koji zadovoljavaju pretragu!")
+                print("Nema fajlova za uneti upit!")
         elif unos == "2":
             break

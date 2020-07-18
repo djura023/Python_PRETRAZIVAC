@@ -7,7 +7,6 @@ class Set():
             self.recnik = {}
 
     def unijaRecnika(self, drugiSkup):
-
         unijaSkupova = Set()
         for elementPrvogSkupa in self.recnik:
             unijaSkupova.recnik[elementPrvogSkupa] = elementPrvogSkupa
@@ -18,25 +17,16 @@ class Set():
     def komplementRecnika(self, drugiSkup):
         komplementSkupa = Set()
         for elementPrvogSkupa in self.recnik:
-            if elementPrvogSkupa not in drugiSkup.kljucevi():
+            if elementPrvogSkupa not in drugiSkup.recnik:
                 komplementSkupa.recnik[elementPrvogSkupa] = elementPrvogSkupa
         return komplementSkupa
 
     def presekRecnika(self, drugiSkup):
         presekSkupova = Set()
         for elementPrvogSkupa in self.recnik:
-             if elementPrvogSkupa not in drugiSkup.kljucevi():
+             if elementPrvogSkupa in drugiSkup.recnik:
                 presekSkupova.recnik[elementPrvogSkupa] = elementPrvogSkupa
         return presekSkupova
-
-    def kljucevi(self):
-        return self.recnik.keys()
-
-    def pretvoriRecnikUListu(self):
-        lista = []
-        for element in self.kljucevi():
-            lista.append(element)
-        return lista
 
 
 

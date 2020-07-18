@@ -8,38 +8,41 @@ def parsirajUpit(stablo):
     delovi = upit.split()
     rezultatPretrage = [None]*len(delovi)
 
-    validacijaUpita(delovi,stablo)
+    validacijaUpita(delovi,stablo,upit)
     pocetniSetovi(delovi,stablo,rezultatPretrage)
     s = Set()
     return finalniSet(rezultatPretrage,s),delovi
 
 
 
-def validacijaUpita(delovi,stablo):
-    if len(delovi) == 0:
-        parsirajUpit(stablo)
-    elif len(delovi) > 3:
+def validacijaUpita(delovi,stablo,upit):
+
+    if len(delovi) > 3:
         for rec in delovi:
-             if rec.lower() in ("and", "or", "not"):
-                print("Neispravan upit,ukoliko upit ima logicki operator mora biti u formatu rec1 operator rec2")
-                parsirajUpit(stablo)
-    else:
-        if delovi[0].lower() in ("and", "or", "not") or delovi[-1].lower() in ("and", "or", "not"):
-            print("Neispravan upit,ukoliko upit ima logicki operator mora biti u formatu rec1 operator rec2")
-            parsirajUpit(stablo)
+             if rec.lower() in ("or","not","and"):
+                print("Neispravan upit! Ukoliko upit sadrzi logicki operator,on mora biti u formatu rec1 operator rec2")
+                return -1
+    elif upit == "":
+        return -1
+    elif delovi[0].lower() in ("or","not","and"):
+        print("Neispravan upit! Ukoliko upit sadrzi logicki operator,on mora biti u formatu rec1 operator rec2")
+        return -1
+    elif delovi[-1].lower() in ("or", "not", "and"):
+        print("Neispravan upit! Ukoliko upit sadrzi logicki operator,on mora biti u formatu rec1 operator rec2")
+        return -1
 
 def pocetniSetovi(delovi,stablo,rezultatPretrage):
     i = 0
     for rec in delovi:
-        if rec.lower() in ("and", "or", "not"):
+        if rec.lower() in ("or","not","and"):
             rezultatPretrage[i] = rec.lower()
             i = i + 1
         else:
-            if not stablo.nadjiRec(rec):
-                rezultatPretrage[i] = Set()
+            if stablo.nadjiRec(rec) != False:
+                rezultatPretrage[i] = stablo.nadjiRec(rec)[2].prebaciUSet()
                 i = i + 1
             else:
-                rezultatPretrage[i] = stablo.nadjiRec(rec)[2].prebaciUSet()
+                rezultatPretrage[i] = Set()
                 i = i + 1
 
 def finalniSet(rezultatPretrage,s):

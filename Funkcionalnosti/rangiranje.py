@@ -1,6 +1,5 @@
 import os
 import math
-import  networkx as nx
 import random
 import operator
 class PageRang:
@@ -39,7 +38,7 @@ def rjecnikZaRang(root, nizReciIzUpita, linokviPretrage):
             reciZaPrebrojavanje[rec] = rec
 
     # inicijalizovanje recnika
-    for link in linokviPretrage.kljucevi():
+    for link in linokviPretrage.recnik:
         recnikZaUkupnoPojavljivanjeReciNaLinku[os.path.abspath(link)] = 0
         recnikZaRazliciteReci[os.path.abspath(link)]=0
 
