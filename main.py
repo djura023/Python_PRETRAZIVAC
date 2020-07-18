@@ -77,10 +77,11 @@ if __name__ == "__main__":
             graf = Graph()
             direktorijum(parser,stablo,graf)
         elif unos == "1":
+
             while True:
                 s = parsirajUpit(stablo)
                 if s != -1:
-                  break
+                    break
 
             r = rjecnikZaRang(stablo, s[1], s[0])
             rjecnikZaRangiranje = r[0]

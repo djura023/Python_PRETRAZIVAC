@@ -8,14 +8,17 @@ def parsirajUpit(stablo):
     delovi = upit.split()
     rezultatPretrage = [None]*len(delovi)
 
-    validacijaUpita(delovi,stablo,upit)
+
+    if validacijaUpita(delovi,upit) == -1:
+        return -1
+
     pocetniSetovi(delovi,stablo,rezultatPretrage)
     s = Set()
     return finalniSet(rezultatPretrage,s),delovi
 
 
 
-def validacijaUpita(delovi,stablo,upit):
+def validacijaUpita(delovi,upit):
 
     if len(delovi) > 3:
         for rec in delovi:
@@ -47,17 +50,19 @@ def pocetniSetovi(delovi,stablo,rezultatPretrage):
 
 def finalniSet(rezultatPretrage,s):
     i = 0
-    while i < len(rezultatPretrage):
-        if rezultatPretrage[i] == "and":
-            s = s.presekRecnika(rezultatPretrage[i + 1])
-            i = i + 2
-        elif rezultatPretrage[i] == "not":
-            s = s.komplementRecnika(rezultatPretrage[i + 1])
-            i = i + 2
-        elif rezultatPretrage[i] == "or":
-            s = s.unijaRecnika(rezultatPretrage[i + 1])
-            i = i + 2
+    if len(rezultatPretrage) == 3:
+        s = s.unijaRecnika(rezultatPretrage[0])
+        if rezultatPretrage[1] == "and":
+            s = s.presekRecnika(rezultatPretrage[2])
+        elif rezultatPretrage[1] == "not":
+            s = s.komplementRecnika(rezultatPretrage[2])
+        elif rezultatPretrage[1] == "or":
+            s = s.unijaRecnika(rezultatPretrage[2])
         else:
+            s = s.unijaRecnika(rezultatPretrage[1])
+            s = s.unijaRecnika(rezultatPretrage[2])
+    else:
+        while i < len(rezultatPretrage):
             s = s.unijaRecnika(rezultatPretrage[i])
             i = i + 1
     return s
