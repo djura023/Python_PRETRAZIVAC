@@ -23,7 +23,8 @@ def menu():
 def unosenjeRangaCvorova(g) :
     for link in g.getLinkove():
         #inicijalizovani su na 1/ukupan_br_linkova
-        g.cvorovi[link].setRang(1/ len(g.getLinkove()))
+        #g.cvorovi[link].setRang(1/ len(g.getLinkove()))
+        g.cvorovi[link].setRang(1)
     for i in range(100) :
         for link in g.getLinkove() :
            for ulazniLink in g.getUlazneLinkove(link) :
@@ -77,7 +78,7 @@ if __name__ == "__main__":
             direktorijum(parser,stablo,graf)
         elif unos == "1":
             s = parsirajUpit(stablo)
-            r = rjecnikZaRang(stablo, s[1], s[0])
+            r = rjecnikZaRang(stablo, s[1], s[0],graf)
             rjecnikZaRangiranje = r[0]
             recnikZbirSvihReciNaLinkuPom = {}
             recnikZbirSvihReciNaLinku = {}

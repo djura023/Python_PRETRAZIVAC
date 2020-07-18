@@ -8,7 +8,8 @@ def parsirajUpit(stablo):
     delovi = upit.split()
     rezultatPretrage = [None]*len(delovi)
 
-    validacijaUpita(delovi,stablo)
+    delovi = validacijaUpita(delovi,stablo)
+    rezultatPretrage = [None] * len(delovi)
     pocetniSetovi(delovi,stablo,rezultatPretrage)
     s = Set()
     return finalniSet(rezultatPretrage,s),delovi
@@ -27,6 +28,7 @@ def validacijaUpita(delovi,stablo):
         if delovi[0].lower() in ("and", "or", "not") or delovi[-1].lower() in ("and", "or", "not"):
             print("Neispravan upit,ukoliko upit ima logicki operator mora biti u formatu rec1 operator rec2")
             parsirajUpit(stablo)
+    return  delovi
 
 def pocetniSetovi(delovi,stablo,rezultatPretrage):
     i = 0

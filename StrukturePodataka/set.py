@@ -6,6 +6,9 @@ class Set():
         else:
             self.recnik = {}
 
+    def getRecnik(self):
+        return  self.recnik
+
     def unijaRecnika(self, drugiSkup):
 
         unijaSkupova = Set()
