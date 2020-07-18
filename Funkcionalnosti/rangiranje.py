@@ -51,8 +51,8 @@ def rjecnikZaRang(root, nizReciIzUpita, linokviPretrage):
         recnikBrojaPonavljanjaJedneReciULink = {}
 
         # popunjavanje recnika (vrednost = link, kljuc = broj pojavljivanja jedne reci na njemu)
-        for pom in cvorNaKomSeZavrsavaRec[0].links:
-            recnikBrojaPonavljanjaJedneReciULink[os.path.abspath(pom)]=cvorNaKomSeZavrsavaRec[0].links[pom]
+        for pom in cvorNaKomSeZavrsavaRec[0].linkovi:
+            recnikBrojaPonavljanjaJedneReciULink[os.path.abspath(pom)]=cvorNaKomSeZavrsavaRec[0].linkovi[pom]
 
         #ppopunjavanje potrebnih recnika koji se salju dalje
         for link in recnikBrojaPonavljanjaJedneReciULink:
