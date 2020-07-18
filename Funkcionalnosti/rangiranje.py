@@ -1,7 +1,9 @@
 import os
 import math
+import  networkx as nx
+import random
+import operator
 class PageRang:
-
     def __init__(self,link,brojZaRangiranje):
         self.link = link
         self.brojZaRangiranje = brojZaRangiranje
@@ -29,16 +31,12 @@ def rjecnikZaRang(root, nizReciIzUpita, linokviPretrage):
 
     recnikZaUkupnoPojavljivanjeReciNaLinku = {}
     recnikZaRazliciteReci = {}
-    reciZaPrebrojavanje = []
+    reciZaPrebrojavanje = {}
 
     #filtriranje niza (dobijamo niz sa potrebnim recima)
-    for i in range(0, len(nizReciIzUpita)):
-        if nizReciIzUpita[i].upper() == "NOT":
-            break;
-        if nizReciIzUpita[i] in reciZaPrebrojavanje:
-            continue;
-        if nizReciIzUpita[i].upper() not in ("AND","OR"):
-            reciZaPrebrojavanje.append(nizReciIzUpita[i])
+    for rec in nizReciIzUpita:
+        if rec.upper() not in ("AND","OR","NOT"):
+            reciZaPrebrojavanje[rec] = rec
 
     # inicijalizovanje recnika
     for link in linokviPretrage.kljucevi():
@@ -47,21 +45,22 @@ def rjecnikZaRang(root, nizReciIzUpita, linokviPretrage):
 
     # dobijanje cvora za odredjenu rec
     for rec in reciZaPrebrojavanje:
-        cvorNaKomSeZavrsavaRec = root.nadjiCvor(rec) # vrednost treba da bude cvor na kom  se zavrsava rijec
+        cvorNaKomSeZavrsavaRec = root.nadjiCvor(rec)[0] # vrednost treba da bude cvor na kom  se zavrsava rijec
         recnikBrojaPonavljanjaJedneReciULink = {}
 
         # popunjavanje recnika (vrednost = link, kljuc = broj pojavljivanja jedne reci na njemu)
-        for pom in cvorNaKomSeZavrsavaRec[0].links:
-            recnikBrojaPonavljanjaJedneReciULink[os.path.abspath(pom)]=cvorNaKomSeZavrsavaRec[0].links[pom]
+        for pom in cvorNaKomSeZavrsavaRec.links:
+            recnikBrojaPonavljanjaJedneReciULink[os.path.abspath(pom)] = cvorNaKomSeZavrsavaRec.links[pom]
 
-        #ppopunjavanje potrebnih recnika koji se salju dalje
+        #popunjavanje potrebnih recnika koji se salju dalje
         for link in recnikBrojaPonavljanjaJedneReciULink:
             if link in recnikZaUkupnoPojavljivanjeReciNaLinku.keys():
                 recnikZaUkupnoPojavljivanjeReciNaLinku[link] += recnikBrojaPonavljanjaJedneReciULink[link]
                 recnikZaRazliciteReci[link]+=1
+        #for link in cvorNaKomSeZavrsavaRec.links :
+        #    recnikZaUkupnoPojavljivanjeReciNaLinku[link] +=
 
     return recnikZaUkupnoPojavljivanjeReciNaLinku,recnikZaRazliciteReci
-
 
 def uticajVrednostiLinkova(root, linkoviUpita, rjecnikUpita):
     rang3={}
@@ -105,7 +104,6 @@ def uticajRazlicitihReci(mapaRazlicitihReci):
     for link in mapaRazlicitihReci.keys():
         rang1[link]= math.pow(rang1[link],mapaRazlicitihReci[link])
     return rang1
-
 
 def uticajBrojaReci(mapaZaRang):
     broj = 10*0.3

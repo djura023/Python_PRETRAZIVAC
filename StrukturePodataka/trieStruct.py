@@ -1,5 +1,5 @@
 # Preuzeta implementacija sa : https://www.geeksforgeeks.org/trie-insert-and-search/
-from StrukturePodataka.set import Set
+from Python_PRETRAZIVAC.StrukturePodataka.set import Set
 class TrieNode:
 
     # Trie node class
