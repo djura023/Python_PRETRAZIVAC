@@ -23,7 +23,7 @@ class Rang:
 
 
 
-    def Ispisi(self):
+    """def Ispisi(self):
         rang = round(self.ukupniRang,3)
         m0 = round(self.r0)
         m1 = round(self.r1,3)
@@ -31,4 +31,4 @@ class Rang:
         m3 = round(self.r3,3)
         m4 = round(self.r4,3)
         print("%0.3f\t\t%0.3f\t\t%0.3f\t\t%0.3f\t\t%0.3f\t\t%0.3f\t\t%s"%(rang,m0,m1,m2,m3,m4,self.link))
-        #print(f'{rang:2}  {m0:8}  {m1:8}  {m2:8}  {m3:8}  {m4:4} ',self.link)
+        #print(f'{rang:2}  {m0:8}  {m1:8}  {m2:8}  {m3:8}  {m4:4} ',self.link)"""

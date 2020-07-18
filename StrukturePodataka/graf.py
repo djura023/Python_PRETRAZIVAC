@@ -2,6 +2,7 @@ import os
 
 from StrukturePodataka.cvor import Cvor
 from StrukturePodataka.trieStruct import Trie
+from StrukturePodataka.strukturaStabla import *
 from Funkcionalnosti.parser import Parser
 
 class Graph:

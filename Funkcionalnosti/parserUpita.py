@@ -1,54 +1,60 @@
-from StrukturePodataka.trieStruct import *
+from StrukturePodataka.strukturaStabla import *
 from StrukturePodataka.set import *
 from StrukturePodataka.graf import *
 
-def ParsirajUpit(trie):
+def parsirajUpit(stablo):
     upit = input("Unesite upit za pretragu:")
     delovi = upit.split()
     rezultatPretrage = [None]*len(delovi)
 
+    validacijaUpita(delovi,stablo)
+    pocetniSetovi(delovi,stablo,rezultatPretrage)
+    s = Set()
+    return finalniSet(rezultatPretrage,s),delovi
+
+
+
+def validacijaUpita(delovi,stablo):
     if len(delovi) == 0:
-        ParsirajUpit(trie)
+        parsirajUpit(stablo)
     elif len(delovi) > 3:
         for rec in delovi:
              if rec.lower() in ("and", "or", "not"):
                 print("Neispravan upit,ukoliko upit ima logicki operator mora biti u formatu rec1 operator rec2")
-                ParsirajUpit(trie)
+                parsirajUpit(stablo)
     else:
         if delovi[0].lower() in ("and", "or", "not") or delovi[-1].lower() in ("and", "or", "not"):
             print("Neispravan upit,ukoliko upit ima logicki operator mora biti u formatu rec1 operator rec2")
-            ParsirajUpit(trie)
+            parsirajUpit(stablo)
 
+def pocetniSetovi(delovi,stablo,rezultatPretrage):
     i = 0
-    #trazenaLista = Set()
     for rec in delovi:
         if rec.lower() in ("and", "or", "not"):
             rezultatPretrage[i] = rec.lower()
             i = i + 1
         else:
-            if not trie.search(rec):
+            if not stablo.nadjiRec(rec):
                 rezultatPretrage[i] = Set()
                 i = i + 1
             else:
-                rezultatPretrage[i] = trie.search(rec)[2].IntoSet()
+                rezultatPretrage[i] = stablo.nadjiRec(rec)[2].prebaciUSet()
                 i = i + 1
 
-
-    s = Set()
+def finalniSet(rezultatPretrage,s):
     i = 0
-    if len(rezultatPretrage) == 3:
-        s = s.unijaRecnika(rezultatPretrage[0])
-        if rezultatPretrage[1] == "and":
-            s = s.presekRecnika(rezultatPretrage[2])
-        elif rezultatPretrage[1] == "not":
-            s = s.komplementRecnika(rezultatPretrage[2])
-        elif rezultatPretrage[1] == "or":
-            s = s.unijaRecnika(rezultatPretrage[2])
+    while i < len(rezultatPretrage):
+        if rezultatPretrage[i] == "and":
+            s = s.presekRecnika(rezultatPretrage[i + 1])
+            i = i + 2
+        elif rezultatPretrage[i] == "not":
+            s = s.komplementRecnika(rezultatPretrage[i + 1])
+            i = i + 2
+        elif rezultatPretrage[i] == "or":
+            s = s.unijaRecnika(rezultatPretrage[i + 1])
+            i = i + 2
         else:
-            s = s.unijaRecnika(rezultatPretrage[1])
-            s = s.unijaRecnika(rezultatPretrage[2])
-    else:
-        while i < len(rezultatPretrage):
             s = s.unijaRecnika(rezultatPretrage[i])
             i = i + 1
-    return s, delovi # delovi su sve reci koje se unesu sa logickim operatorima
+    #return s, delovi # delovi su sve reci koje se unesu sa logickim operatorima
+    return s
