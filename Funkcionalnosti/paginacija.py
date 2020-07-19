@@ -16,12 +16,12 @@ def ispisiRangove(recnikRangova):
     print(Fore.WHITE + 170 * '*')
     print(Fore.BLUE +70*' '+ "\033[1m" +"SADRZAJ" + "\033[0m")
     print(Fore.WHITE + 170 * '-')
-    print(Fore.BLUE+"RANG"+8*' '+"BROJ"+7*' '+"RAZLICITE"+4*' '+"UTICAJ BROJA"+5*' '+"UTICAJ SNAGE"+4*' '+"UTICAJ BROJA"+45*' '+"LINKOVI")
-    print(Fore.BLUE+"LINKA"+7*' '+"RECI"+9*' '+"RECI"+11*' '+"RECI"+12*' '+"LINKOVA"+9*' '+"LINKOVA")
+    print(Fore.BLUE+"RANG"+8*' '+"BROJ"+5*' '+"RAZLICITE"+3*' '+"UTICAJ BROJA"+4*' '+"UTICAJ SNAGE"+4*' '+"UTICAJ BROJA"+45*' '+"LINKOVI")
+    print(Fore.BLUE+"LINKA"+7*' '+"RECI"+7*' '+"RECI"+10*' '+"RECI"+12*' '+"LINKOVA"+8*' '+"LINKOVA")
     print(Fore.WHITE+170 * '-')
     for link in recnikRangova.keys():
-        print(Fore.CYAN+ "%-12.3f%-12.3f%-12.3f\t%-12.3f\t%-12.3f\t%-12.3f\t\t\t%s" % (
-        recnikRangova[link][0],recnikRangova[link][1],recnikRangova[link][2],recnikRangova[link][3],recnikRangova[link][4],recnikRangova[link][5],link))
+        print(Fore.CYAN+ "%-12.6f%-12d%-11d\t%-12.6f\t%-12.6f\t%-12.6f\t\t\t%s" % (
+        recnikRangova[link].getRang(),recnikRangova[link].getR0(),recnikRangova[link].getR1(),recnikRangova[link].getR2(),recnikRangova[link].getR4(),recnikRangova[link].getR3(),link))
     print(Fore.WHITE+170 * '*')
 
 def odredjivanjeLinkovaZaPrikaz(linkovi,brojLinkovaKojiSePrikazuju, stranicaKojaSePrikazuje)   :

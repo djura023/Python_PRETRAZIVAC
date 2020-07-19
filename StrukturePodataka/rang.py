@@ -1,23 +1,25 @@
 import math
 class Rang:
 
-    def __init__(self,r0,r1,r2,r3,r4,rang,link):
+    def __init__(self,brojReci,razliciteReci,uticajBrReci,snagaLinkova,brLinkova,rang,link):
         self.link = link
-        self.r0 = r0
-        self.r1 = r1
-        self.r2 = r2
-        self.r3 = r3
-        self.r4 = r4
+        self.brojReci = brojReci
+        self.razliciteReci = razliciteReci
+        self.uticajBrReci = uticajBrReci
+        self.snagaLinkova = snagaLinkova
+        self.brLinkova = brLinkova
         self.ukupniRang  = rang
 
-    def get_r0(self):
-        return self.r0
-    def get_r1(self):
-        return self.r0
-    def get_r2(self):
-        return self.r0
-    def get_r3(self):
-        return self.r0
-    def get_r4(self):
-        return self.r0
+    def getR0(self):
+        return self.brojReci
+    def getR1(self):
+        return self.razliciteReci
+    def getR2(self):
+        return self.uticajBrReci
+    def getR3(self):
+        return self.snagaLinkova
+    def getR4(self):
+        return self.brLinkova
+    def getRang(self):
+        return self.ukupniRang
 

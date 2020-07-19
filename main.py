@@ -23,9 +23,9 @@ def menu():
 def unosenjeRangaCvorova(g) :
     for link in g.getLinkove():
         #inicijalizovani su na 1/ukupan_br_linkova
-        #g.cvorovi[link].setRang(1/ len(g.getLinkove()))
-        g.cvorovi[link].setRang(1)
-    for i in range(100) :
+        g.cvorovi[link].setRang(1/ len(g.getLinkove()))
+        #g.cvorovi[link].setRang(1)
+    for i in range(16) :
         for link in g.getLinkove() :
            for ulazniLink in g.getUlazneLinkove(link) :
                 g.cvorovi[link].updateRang(g.cvorovi[ulazniLink].getRang()/len(g.cvorovi[ulazniLink].getIzlazniLinkovi()))
@@ -79,47 +79,23 @@ if __name__ == "__main__":
             direktorijum(parser,stablo,graf)
         elif unos == "1":
 
-            s = parsirajUpit(stablo)
-            r = rjecnikZaRang(stablo, s[1], s[0],graf)
-            rjecnikZaRangiranje = r[0]
-            recnikZbirSvihReciNaLinkuPom = {}
-            recnikZbirSvihReciNaLinku = {}
-            for link in rjecnikZaRangiranje.keys():
-                recnikZbirSvihReciNaLinkuPom[link] = rjecnikZaRangiranje[link]
-                recnikZbirSvihReciNaLinku[link] = rjecnikZaRangiranje[link]
+            while True:
+                s = parsirajUpit(stablo)
+                if s != -1:
+                    break
+            recnikR = rjecnikZaRang(stablo, s[1], s[0],graf)
 
-            rangRazlicitihReci = {}
-            rangRazlicitihReci = uticajRazlicitihReci(r[1])
-
-            rangUkupnoReci = {}
-            rangUkupnoReci = uticajBrojaReci(rjecnikZaRangiranje)
-
-            rangSnagaLinkova = {}
-            rangSnagaLinkova = uticajVrednostiLinkova(graf, rjecnikZaRangiranje.keys(), recnikZbirSvihReciNaLinkuPom)
-
-            rangBrojLinkova = {}
-            rangBrojLinkova = uticajBrojaLinkova(graf, rjecnikZaRangiranje)
-
-            RANG = {}
-            RANG = formiranjeRanga(rangRazlicitihReci, rangUkupnoReci, rangSnagaLinkova, rangBrojLinkova)
-
-            if len(rjecnikZaRangiranje) != 0:
-                listaZaSortiranje = []
-                for strana in rjecnikZaRangiranje.keys():
-                    listaZaSortiranje.append(PageRang(strana, RANG[strana]))
+            if len(recnikR) != 0:
+                sortiraj = []
+                for strana in recnikR.keys():
+                    sortiraj.append(PageRang(strana, recnikR[strana].getRang()))
                 recnikRangova = {}
                 #lista rangova
-
+                zaPaginaciju =[]
                 # SORTIRANJE
-                heap_sort(listaZaSortiranje)
-                for pageRang in listaZaSortiranje:
-                    recnikRangova[pageRang.link]=[]
-                    recnikRangova[pageRang.link].append(RANG[pageRang.link])
-                    recnikRangova[pageRang.link].append(recnikZbirSvihReciNaLinku[pageRang.link])
-                    recnikRangova[pageRang.link].append(rangRazlicitihReci[pageRang.link])
-                    recnikRangova[pageRang.link].append(rangUkupnoReci[pageRang.link])
-                    recnikRangova[pageRang.link].append(rangSnagaLinkova[pageRang.link])
-                    recnikRangova[pageRang.link].append(rangBrojLinkova[pageRang.link])
+                heap_sort(sortiraj)
+                for pageRang in sortiraj:
+                    recnikRangova[pageRang.link]=recnikR[pageRang.link]
                 # PAGINACIJA
                 paginacija(recnikRangova)
             else:
