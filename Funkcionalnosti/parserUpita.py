@@ -44,17 +44,17 @@ def validacijaUpita(delovi,upit,stablo):
              if rec.lower() in ("or","not","and"):
                 greska()
                 print(Fore.RED + "\033[1m"+"Neispravan upit! Ukoliko upit sadrzi logicki operator,on mora biti u formatu rec1 operator rec2"+ "\033[0m")
-                parsirajUpit(stablo)
+                return -1
     elif upit == "":
-        parsirajUpit(stablo)
+        return -1
     elif delovi[0].lower() in ("or","not","and"):
         greska()
         print(Fore.RED + "\033[1m" +"Neispravan upit! Ukoliko upit sadrzi logicki operator,on mora biti u formatu rec1 operator rec2"+ "\033[0m")
-        parsirajUpit(stablo)
+        return -1
     elif delovi[-1].lower() in ("or", "not", "and"):
         greska()
         print(Fore.RED + "\033[1m" +"Neispravan upit! Ukoliko upit sadrzi logicki operator,on mora biti u formatu rec1 operator rec2"+ "\033[0m")
-        parsirajUpit(stablo)
+        return -1
 
 def pocetniSetovi(delovi,stablo,rezultatPretrage):
     i = 0
