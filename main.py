@@ -9,14 +9,28 @@ import time
 from Funkcionalnosti.rangiranje import *
 from Funkcionalnosti.sortiranje import *
 from Funkcionalnosti.paginacija import *
+import winsound
+
+class Fore():
+    BLACK = '\033[30m'
+    RED = '\033[31m'
+    GREEN = '\033[32m'
+    YELLOW = '\033[33m'
+    BLUE = '\033[34m'
+    MAGENTA = '\033[35m'
+    CYAN = '\033[36m'
+    WHITE = '\033[37m'
+    UNDERLINE = '\033[4m'
+    RESET = '\033[0m'
+
 def menu():
-    print("---------------------")
-    print("\t\tSadrzaj: ")
-    print("0. Novi direktorijum ")
-    print("1. Unesite upit za pretragu ")
-    print("2. Kraj programa")
-    print("---------------------")
-    unos = input("Izaberite : ")
+    print(30*"-")
+    print(Fore.YELLOW +10*' '+ "SADRZAJ :"+ "\033[0m")
+    print(Fore.BLUE +5*' '+"0. Novi direktorijum "+ "\033[0m")
+    print(Fore.BLUE +5*' '+"1. Unesite upit za pretragu "+ "\033[0m")
+    print(Fore.BLUE +5*' '+"2. Kraj programa"+ "\033[0m")
+    print(30*"-")
+    unos = input(Fore.BLUE+"Izaberite : ")
     return unos
 
 
@@ -31,23 +45,33 @@ def unosenjeRangaCvorova(g) :
                 g.cvorovi[link].updateRang(g.cvorovi[ulazniLink].getRang()/len(g.cvorovi[ulazniLink].getIzlazniLinkovi()))
 
 def direktorijum(parser,stablo,graf):
-    print("Nalazite se u direktorijumu : " + os.getcwd())
-    print("Unesite direktorijum za parsiranje: ")
+    print(Fore.BLUE + "\033[1m" + "Nalazite se u direktorijumu : " + Fore.YELLOW  + "\033[1m" + os.getcwd() + "\033[0m"+ "\033[0m")
+    print(Fore.BLUE  + "Unesite naziv zeljenog direktorijuma :"+ "\033[0m")
     dir = input()
-
-    proveraDirektorijuma(dir)
+    dir = dir.strip()
+    dir = proveraDirektorijuma(dir)
     dir = dodajAbsolutnuPutanju(dir)
 
     pocetak = time.time()
+    print(Fore.YELLOW + "Parsiranje je u toku..." + "\033[0m")
     popuniGrafIStablo(dir,parser,stablo,graf)
     unosenjeRangaCvorova(graf)
+    print(Fore.YELLOW + "Parsiranje uspesno zavrseno!"+"\033[0m")
     kraj = time.time()
-    print(kraj - pocetak)
+    print(kraj- pocetak)
+
+def greska() :
+    fr = 2000
+    d = 50
+    winsound.Beep(fr,d)
+    print(Fore.RED + "\033[1m" + "Pogresan unos!" + "\033[0m")
 
 def proveraDirektorijuma(dir):
-    while (not os.path.isdir(dir)):
-        print("Ne postoji uneti direktorijum,unesite drugi:")
+    while (not os.path.isdir(dir.strip())):
+        greska()
+        print(Fore.RED  + "\033[1m" + "Ne postoji uneti direktorijum! Unesite ispravan direktorijum :" + "\033[0m")
         dir = input()
+    return dir.strip()
 
 def dodajAbsolutnuPutanju(dir):
     if not os.path.isabs(dir):
