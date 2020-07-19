@@ -2,13 +2,27 @@
 from StrukturePodataka.strukturaStabla import *
 from StrukturePodataka.set import *
 from StrukturePodataka.graf import *
+import winsound
+
+class Fore():
+    BLACK = '\033[30m'
+    RED = '\033[31m'
+    GREEN = '\033[32m'
+    YELLOW = '\033[33m'
+    BLUE = '\033[34m'
+    MAGENTA = '\033[35m'
+    CYAN = '\033[36m'
+    WHITE = '\033[37m'
+    UNDERLINE = '\033[4m'
+    RESET = '\033[0m'
+
 
 def parsirajUpit(stablo):
     upit = input("Unesite upit za pretragu:")
     delovi = upit.split()
     rezultatPretrage = [None]*len(delovi)
 
-    if validacijaUpita(delovi,upit) == -1:
+    if validacijaUpita(delovi,upit,stablo) == -1:
         return -1
 
     pocetniSetovi(delovi,stablo,rezultatPretrage)
@@ -16,22 +30,30 @@ def parsirajUpit(stablo):
     return finalniSet(rezultatPretrage,s),delovi
 
 
+def greska() :
+    fr = 2000
+    d = 50
+    winsound.Beep(fr,d)
+    print(Fore.RED + "\033[1m" + "Pogresan unos!" + "\033[0m")
 
-def validacijaUpita(delovi,upit):
+def validacijaUpita(delovi,upit,stablo):
 
     if len(delovi) > 3:
         for rec in delovi:
 
              if rec.lower() in ("or","not","and"):
-                print("Neispravan upit! Ukoliko upit sadrzi logicki operator,on mora biti u formatu rec1 operator rec2")
+                greska()
+                print(Fore.RED + "\033[1m"+"Neispravan upit! Ukoliko upit sadrzi logicki operator,on mora biti u formatu rec1 operator rec2"+ "\033[0m")
                 parsirajUpit(stablo)
     elif upit == "":
         parsirajUpit(stablo)
     elif delovi[0].lower() in ("or","not","and"):
-        print("Neispravan upit! Ukoliko upit sadrzi logicki operator,on mora biti u formatu rec1 operator rec2")
+        greska()
+        print(Fore.RED + "\033[1m" +"Neispravan upit! Ukoliko upit sadrzi logicki operator,on mora biti u formatu rec1 operator rec2"+ "\033[0m")
         parsirajUpit(stablo)
     elif delovi[-1].lower() in ("or", "not", "and"):
-        print("Neispravan upit! Ukoliko upit sadrzi logicki operator,on mora biti u formatu rec1 operator rec2")
+        greska()
+        print(Fore.RED + "\033[1m" +"Neispravan upit! Ukoliko upit sadrzi logicki operator,on mora biti u formatu rec1 operator rec2"+ "\033[0m")
         parsirajUpit(stablo)
 
 def pocetniSetovi(delovi,stablo,rezultatPretrage):

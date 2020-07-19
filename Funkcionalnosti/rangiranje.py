@@ -78,7 +78,14 @@ def rjecnikZaRang(root, nizReciIzUpita, linokviPretrage,graf):
             brojzaSnaguLinkova = recnikSnageLinkova[link]
             brUkupnoPojav = recnikZaUkupnoPojavljivanjeReciNaLinku[link]
             brZaRangIzCvora = round(float(graf.cvorovi[link].getRang()),5)
-
+            if brojRazlicitihReci == 0 :
+                brojRazlicitihReci = 1
+            if brojzaSnaguLinkova == 0 :
+                brojzaSnaguLinkova = 1
+            if brUkupnoPojav == 0 :
+                brUkupnoPojav = 1
+            if brZaRangIzCvora == 0 :
+                brZaRangIzCvora = 1
             snagaL = 0.35 / brojzaSnaguLinkova
             brR = 0.32 /brUkupnoPojav
             pr = 0.33 / brZaRangIzCvora

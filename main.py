@@ -30,7 +30,7 @@ def menu():
     print(Fore.BLUE +5*' '+"1. Unesite upit za pretragu "+ "\033[0m")
     print(Fore.BLUE +5*' '+"2. Kraj programa"+ "\033[0m")
     print(30*"-")
-    unos = input(Fore.BLUE+"Izaberite : ")
+    unos = input(Fore.BLUE+"Izaberite : "+"\033[0m")
     return unos
 
 
