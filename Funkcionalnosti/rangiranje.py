@@ -3,23 +3,6 @@ import math
 import random
 from StrukturePodataka.rang import Rang
 import operator
-class PageRang:
-    def __init__(self,link,brojZaRangiranje):
-        self.link = link
-        self.brojZaRangiranje = brojZaRangiranje
-
-    def getLink(self):
-        return self.link
-
-    def getBrojRanga(self):
-        return self.brojZaRangiranje
-
-    def setLink(self,noviLink):
-        self.link = noviLink
-
-    def setBrojRanga(self,noviBrojZaRangiranje):
-        self.brojZaRangiranje = noviBrojZaRangiranje
-
 
 def rjecnikZaRang(root, nizReciIzUpita, linokviPretrage,graf):
     recnikRangova = {}

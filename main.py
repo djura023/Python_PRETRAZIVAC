@@ -5,6 +5,7 @@ from Funkcionalnosti.parser import Parser
 from Funkcionalnosti.parserUpita import *
 from StrukturePodataka.graf import *
 from StrukturePodataka.rang import *
+from StrukturePodataka.pomocniRang import PomocniRang
 import time
 from Funkcionalnosti.rangiranje import *
 from Funkcionalnosti.sortiranje import *
@@ -112,12 +113,12 @@ if __name__ == "__main__":
             if len(recnikR) != 0:
                 sortiraj = []
                 for strana in recnikR.keys():
-                    sortiraj.append(PageRang(strana, recnikR[strana].getRang()))
+                    sortiraj.append(PomocniRang(strana, recnikR[strana].getRang()))
                 recnikRangova = {}
                 #lista rangova
                 zaPaginaciju =[]
                 # SORTIRANJE
-                heap_sort(sortiraj)
+                merge_sort(sortiraj)
                 for pageRang in sortiraj:
                     recnikRangova[pageRang.link]=recnikR[pageRang.link]
                 # PAGINACIJA
