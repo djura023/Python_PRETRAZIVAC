@@ -20,13 +20,7 @@ class PageRang:
     def setBrojRanga(self,noviBrojZaRangiranje):
         self.brojZaRangiranje = noviBrojZaRangiranje
 
-    def ispisi(self):
-        print(self.brojZaRangiranje,self.link)
-                    #d = niz reci upita, s = linkovi pretrage
 
-    #pravi dve mapa
-    #(1. kljuc je link,vrednost broj pojavljivanja svih trazenkih reci na tom linku)
-    #(2. kljuc je link,vrednost broj pojavljivanja razlicitih reci na tom linku)
 def rjecnikZaRang(root, nizReciIzUpita, linokviPretrage,graf):
     recnikRangova = {}
     recnikSnageLinkova = {}
@@ -35,28 +29,34 @@ def rjecnikZaRang(root, nizReciIzUpita, linokviPretrage,graf):
     recnikZaRazliciteReci = {}
     reciZaPrebrojavanje = {}
 
-    # inicijalizovanje recnika
+
     for link in linokviPretrage.recnik:
         recnikZaUkupnoPojavljivanjeReciNaLinku[os.path.abspath(link)] = 0
         recnikZaRazliciteReci[os.path.abspath(link)]=0
         recnikSnageLinkova[os.path.abspath(link)] = 0
         recnikRangova[os.path.abspath(link)] = 0
         recnikBrojaLinkova[os.path.abspath(link)] = 0
-    #filtriranje niza (dobijamo niz sa potrebnim recima)
-    for rec in nizReciIzUpita:
-        if rec.upper() not in ("AND","OR","NOT"):
-            reciZaPrebrojavanje[rec] = rec
+    f = 0
+    for i in range(len(nizReciIzUpita)):
+        if nizReciIzUpita[i].lower() in ("not") :
+            f=1
+        if f == 1 or f == 2 :
+            f=2
+            continue
+        f = 0
+        if nizReciIzUpita[i].lower() not in ("and","or","not"):
+            reciZaPrebrojavanje[nizReciIzUpita[i]] = nizReciIzUpita[i]
 
-    # dobijanje cvora za odredjenu rec
+
     for rec in reciZaPrebrojavanje:
-        cvorNaKomSeZavrsavaRec = root.nadjiCvor(rec)[0] # vrednost treba da bude cvor na kom  se zavrsava rijec
+        cvorNaKomSeZavrsavaRec = root.nadjiCvor(rec)[0]
         recnikBrojaPonavljanjaJedneReciULink = {}
 
-        # popunjavanje recnika (vrednost = link, kljuc = broj pojavljivanja jedne reci na njemu)
+
         for pom in cvorNaKomSeZavrsavaRec.linkovi:
             recnikBrojaPonavljanjaJedneReciULink[os.path.abspath(pom)] = cvorNaKomSeZavrsavaRec.linkovi[pom]
 
-        #popunjavanje potrebnih recnika koji se salju dalje
+
         for link in recnikBrojaPonavljanjaJedneReciULink:
             if link in recnikZaUkupnoPojavljivanjeReciNaLinku.keys():
                 if (len(graf.getUlazneLinkove(os.path.abspath(link))) != 0):
@@ -64,7 +64,7 @@ def rjecnikZaRang(root, nizReciIzUpita, linokviPretrage,graf):
                 recnikZaUkupnoPojavljivanjeReciNaLinku[link] += recnikBrojaPonavljanjaJedneReciULink[link]
                 recnikZaRazliciteReci[link]+=1
 
-        # recnik -> kljuc je snaga linkova
+
         for odredjeniLink in recnikZaUkupnoPojavljivanjeReciNaLinku :
             for linkPokazivac in graf.cvorovi[odredjeniLink].getUlazniLinkovi() :
                 if linkPokazivac in recnikZaUkupnoPojavljivanjeReciNaLinku :
@@ -75,17 +75,9 @@ def rjecnikZaRang(root, nizReciIzUpita, linokviPretrage,graf):
 
             recnikBrojaLinkova[link] = len(graf.getUlazneLinkove(os.path.abspath(link)))
             brojRazlicitihReci = recnikZaRazliciteReci[link]
-            brojzaSnaguLinkova = recnikSnageLinkova[link]
-            brUkupnoPojav = recnikZaUkupnoPojavljivanjeReciNaLinku[link]
-            brZaRangIzCvora = round(float(graf.cvorovi[link].getRang()),5)
-            if brojRazlicitihReci == 0 :
-                brojRazlicitihReci = 1
-            if brojzaSnaguLinkova == 0 :
-                brojzaSnaguLinkova = 1
-            if brUkupnoPojav == 0 :
-                brUkupnoPojav = 1
-            if brZaRangIzCvora == 0 :
-                brZaRangIzCvora = 1
+            brojzaSnaguLinkova = recnikSnageLinkova[link] + 1
+            brUkupnoPojav = recnikZaUkupnoPojavljivanjeReciNaLinku[link] + 1
+            brZaRangIzCvora = round(float(graf.cvorovi[link].getRang()),5) + 1
             snagaL = 0.35 / brojzaSnaguLinkova
             brR = 0.32 /brUkupnoPojav
             pr = 0.33 / brZaRangIzCvora
