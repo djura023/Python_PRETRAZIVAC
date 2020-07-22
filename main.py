@@ -1,4 +1,4 @@
-
+from Funkcionalnosti.napredniParser import *
 from StrukturePodataka.strukturaStabla import *
 from StrukturePodataka.set import Set
 from Funkcionalnosti.parser import Parser
@@ -10,7 +10,6 @@ import time
 from Funkcionalnosti.rangiranje import *
 from Funkcionalnosti.sortiranje import *
 from Funkcionalnosti.paginacija import *
-import winsound
 
 class Fore():
     BLACK = '\033[30m'
@@ -29,7 +28,8 @@ def menu():
     print(Fore.YELLOW +10*' '+ "SADRZAJ :"+ "\033[0m")
     print(Fore.BLUE +5*' '+"0. Novi direktorijum "+ "\033[0m")
     print(Fore.BLUE +5*' '+"1. Unesite upit za pretragu "+ "\033[0m")
-    print(Fore.BLUE +5*' '+"2. Kraj programa"+ "\033[0m")
+    print(Fore.BLUE +5*' '+"2. Unesite upit za naprednu pretragu "+ "\033[0m")
+    print(Fore.BLUE +5*' '+"3. Kraj programa"+ "\033[0m")
     print(30*"-")
     unos = input(Fore.BLUE+"Izaberite : "+"\033[0m")
     return unos
@@ -64,7 +64,6 @@ def direktorijum(parser,stablo,graf):
 def greska() :
     fr = 2000
     d = 50
-    winsound.Beep(fr,d)
     print(Fore.RED + "\033[1m" + "Pogresan unos!" + "\033[0m")
 
 def proveraDirektorijuma(dir):
@@ -108,7 +107,7 @@ if __name__ == "__main__":
                 s = parsirajUpit(stablo)
                 if s != -1:
                     break
-            recnikR = rjecnikZaRang(stablo, s[1], s[0],graf)
+            recnikR = rjecnikZaRang(stablo, s[1], s[0],graf,1)
 
             if len(recnikR) != 0:
                 sortiraj = []
@@ -126,4 +125,26 @@ if __name__ == "__main__":
             else:
                 print("Nema fajlova za uneti upit!")
         elif unos == "2":
+            while True:
+                s = napredniParsirajUpit(stablo, graf)
+                if s != -1:
+                    break
+            recnikR = rjecnikZaRang(stablo, s[1], s[0],graf,0)
+
+            if len(recnikR) != 0:
+                sortiraj = []
+                for strana in recnikR.keys():
+                    sortiraj.append(PomocniRang(strana, recnikR[strana].getRang()))
+                recnikRangova = {}
+                #lista rangova
+                zaPaginaciju =[]
+                # SORTIRANJE
+                merge_sort(sortiraj)
+                for pageRang in sortiraj:
+                    recnikRangova[pageRang.link]=recnikR[pageRang.link]
+                # PAGINACIJA
+                paginacija(recnikRangova)
+            else:
+                print("Nema fajlova za uneti upit!")
+        elif unos == "3":
             break

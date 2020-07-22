@@ -4,7 +4,7 @@ import random
 from StrukturePodataka.rang import Rang
 import operator
 
-def rjecnikZaRang(root, nizReciIzUpita, linokviPretrage,graf):
+def rjecnikZaRang(root, nizReciIzUpita, linokviPretrage,graf, flag):
     recnikRangova = {}
     recnikSnageLinkova = {}
     recnikBrojaLinkova = {}
@@ -20,16 +20,26 @@ def rjecnikZaRang(root, nizReciIzUpita, linokviPretrage,graf):
         recnikRangova[os.path.abspath(link)] = 0
         recnikBrojaLinkova[os.path.abspath(link)] = 0
     f = 0
-    for i in range(len(nizReciIzUpita)):
-        if nizReciIzUpita[i].lower() in ("not") :
-            f=1
-        if f == 1 or f == 2 :
-            f=2
-            continue
-        f = 0
-        if nizReciIzUpita[i].lower() not in ("and","or","not"):
-            reciZaPrebrojavanje[nizReciIzUpita[i]] = nizReciIzUpita[i]
-
+    if flag == 1 :
+        for i in range(len(nizReciIzUpita)):
+            if nizReciIzUpita[i].lower() in ("not") :
+                f=1
+            if f == 1 or f == 2 :
+                f=2
+                continue
+            f = 0
+            if nizReciIzUpita[i].lower() not in ("and","or","not"):
+                reciZaPrebrojavanje[nizReciIzUpita[i]] = nizReciIzUpita[i]
+    else :
+        for i in range(len(nizReciIzUpita)):
+            if nizReciIzUpita[i].lower() in ("!"):
+                f = 1
+            if f == 1 or f == 2:
+                f = 2
+                continue
+            f = 0
+            if nizReciIzUpita[i].lower() not in ("&&", "||", "!"):
+                reciZaPrebrojavanje[nizReciIzUpita[i]] = nizReciIzUpita[i]
 
     for rec in reciZaPrebrojavanje:
         cvorNaKomSeZavrsavaRec = root.nadjiCvor(rec)[0]
@@ -66,7 +76,7 @@ def rjecnikZaRang(root, nizReciIzUpita, linokviPretrage,graf):
             pr = 0.33 / brZaRangIzCvora
             velicinaRanga = brojRazlicitihReci + 1-(snagaL+brR+pr)
 
-            recnikRangova[link] = Rang(brUkupnoPojav,brojRazlicitihReci,brR,pr,snagaL,velicinaRanga,odredjeniLink)
+            recnikRangova[link] = Rang(brUkupnoPojav - 1,brojRazlicitihReci,brR,pr,snagaL,velicinaRanga,link)
 
     return recnikRangova
 

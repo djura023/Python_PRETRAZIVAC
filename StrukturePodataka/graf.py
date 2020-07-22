@@ -2,6 +2,7 @@
 import os
 
 from StrukturePodataka.cvor import Cvor
+from StrukturePodataka.set import Set
 from StrukturePodataka.strukturaStabla import *
 from Funkcionalnosti.parser import Parser
 
@@ -12,6 +13,12 @@ class Graph:
 
     def getLinkove(self):
         return  self.cvorovi.keys()
+
+    def getLinkoveKaoSet(self):
+        s = Set()
+        for link in self.cvorovi.keys():
+            s.recnik[link] = link
+        return s
 
     def getUlazneLinkove(self, link):
         return self.cvorovi[link].getUlazniLinkovi()
