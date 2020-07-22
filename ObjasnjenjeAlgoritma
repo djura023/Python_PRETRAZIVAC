@@ -26,7 +26,7 @@ Tu je I funkcija za pretragu preko koje pristupamo cvoru u kojem se nalazai posl
   
 #NapredniParser
      U ovom fajlu je odredjena gramatika, odnosno pravila po kojima se unosi slozeni upit, ali i realizovana je manipulacija sa skupovima (unija, presek, komplement)
-     u zavisnosti od unesenog slozenog upita.  Za resenje ovog dela zadatka koristili smo ovaj link : http://www.igordejanovic.net/parglare/stable/
+     u zavisnosti od unesenog slozenog upita.  Za resenje ovog dela zadatka koristili smo ovaj link : http://www.igordejanovic.net/parglare/stable/ i biblioteku parglare.
 
 #Graf
 	Graf se sastoji od recnika cvorova, dok cvor sadrzi link, ulazne linkove (linkove koji pokazuju na taj link ), izlazne linkove (linkove na koje taj link pokazuje),
@@ -62,3 +62,5 @@ Tu je I funkcija za pretragu preko koje pristupamo cvoru u kojem se nalazai posl
 # Set
 	Set je realizovan kao rjecnik koja ima funkcije za dodavanje elementa ,uniju, presek, komplement…Unija ,presek
   i komplement se pozivaju nad objektom tipa set i primaju objekat tipa set.
+  
+* Za prikaz gresaka smo pored umetanja boja iskoristili i biblioteku winsound pomocu koje se prilikom greske korisnika cuje zvuk o gresci.
