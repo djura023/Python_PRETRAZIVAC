@@ -10,6 +10,7 @@ import time
 from Funkcionalnosti.rangiranje import *
 from Funkcionalnosti.sortiranje import *
 from Funkcionalnosti.paginacija import *
+import winsound
 
 class Fore():
     BLACK = '\033[30m'
@@ -65,6 +66,7 @@ def greska() :
     fr = 2000
     d = 50
     print(Fore.RED + "\033[1m" + "Pogresan unos!" + "\033[0m")
+    winsound.Beep(fr,d)
 
 def proveraDirektorijuma(dir):
     while (not os.path.isdir(dir.strip())):
